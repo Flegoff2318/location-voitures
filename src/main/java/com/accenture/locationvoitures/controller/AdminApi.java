@@ -1,6 +1,7 @@
 package com.accenture.locationvoitures.controller;
 
 import com.accenture.locationvoitures.controller.advice.ErrorDto;
+import com.accenture.locationvoitures.service.dto.request.AdminPatchRequestDto;
 import com.accenture.locationvoitures.service.dto.request.AdminRequestDto;
 import com.accenture.locationvoitures.service.dto.response.AdminResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,4 +36,12 @@ public interface AdminApi {
     @ApiResponse(responseCode = "404", description = "Admin not found", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @DeleteMapping
     ResponseEntity<AdminResponseDto> delete(@RequestHeader(name = "authorization") String base64Header);
+
+    @Operation(summary = "Update partially Admin's details with Basic Auth")
+    @ApiResponse(responseCode = "200")
+    @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+    @ApiResponse(responseCode = "403", description = "Access forbidden", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+    @ApiResponse(responseCode = "404", description = "Admin not found", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+    @PatchMapping("/account")
+    ResponseEntity<AdminResponseDto> patch(@RequestHeader(name = "authorization") String base64Header, @RequestBody AdminPatchRequestDto dto);
 }
