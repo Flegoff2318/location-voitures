@@ -1,17 +1,17 @@
 package com.accenture.locationvoitures.service.impl;
 
 import com.accenture.locationvoitures.exception.AdminException;
-import com.accenture.locationvoitures.exception.CustomerException;
 import com.accenture.locationvoitures.model.Admin;
-import com.accenture.locationvoitures.model.Customer;
 import com.accenture.locationvoitures.repository.AdminRepository;
 import com.accenture.locationvoitures.service.AdminService;
+import com.accenture.locationvoitures.service.dto.request.AdminPatchRequestDto;
 import com.accenture.locationvoitures.service.dto.request.AdminRequestDto;
 import com.accenture.locationvoitures.service.dto.request.PersonRequestDto;
 import com.accenture.locationvoitures.service.dto.response.AdminResponseDto;
 import com.accenture.locationvoitures.service.mapper.AdminMapper;
 import com.accenture.locationvoitures.service.util.Util;
 import lombok.AllArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -46,26 +46,73 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public AdminResponseDto getAdminDetailsByCredentials(PersonRequestDto dto) {
-        Util.verifyPerson(dto);
-        Admin admin = adminRepository.findByEmailAndPassword(dto.email(), dto.password());
-        if (admin==null)
-            throw new AdminException("Admin not found",HttpStatus.NOT_FOUND);
-        if (!admin.getEmail().equals(dto.email()) || !admin.getPassword().equals(dto.password()))
+    public AdminResponseDto getAdminDetailsByCredentials(PersonRequestDto credentials) {
+        Util.verifyPerson(credentials);
+        Admin admin = adminRepository.findByEmailAndPassword(credentials.email(), credentials.password());
+        if (admin == null)
+            throw new AdminException("Admin not found", HttpStatus.NOT_FOUND);
+        if (!admin.getEmail().equals(credentials.email()) || !admin.getPassword().equals(credentials.password()))
             throw new AdminException("Access denied", HttpStatus.FORBIDDEN);
         return adminMapper.toResponseDto(admin);
     }
 
     @Override
-    public void deleteAdmin(PersonRequestDto dto) {
-        Util.verifyPerson(dto);
-        Optional<Admin> optAdmin = Optional.ofNullable(adminRepository.findByEmailAndPassword(dto.email(), dto.password()));
+    public void deleteAdmin(PersonRequestDto credentials) {
+        Util.verifyPerson(credentials);
+        Optional<Admin> optAdmin = Optional.ofNullable(adminRepository.findByEmailAndPassword(credentials.email(), credentials.password()));
         if (optAdmin.isEmpty())
             throw new AdminException("Admin not found", HttpStatus.NOT_FOUND);
         Admin admin = optAdmin.get();
-        if (!admin.getEmail().equals(dto.email()) || !admin.getPassword().equals(dto.password()))
+        if (!admin.getEmail().equals(credentials.email()) || !admin.getPassword().equals(credentials.password()))
             throw new AdminException("Access denied", HttpStatus.FORBIDDEN);
         adminRepository.delete(admin);
+    }
+
+    @Override
+    public AdminResponseDto patch(AdminPatchRequestDto dto, PersonRequestDto credentials) {
+        Util.verifyPerson(credentials);
+        Admin admin = getAdmin(dto, credentials);
+
+        Admin patched = patchAdminData(dto, admin);
+        return adminMapper.toResponseDto(patched);
+    }
+
+    private @NonNull Admin patchAdminData(AdminPatchRequestDto dto, Admin admin) {
+        if (dto.firstname() != null) {
+            if (dto.firstname().isBlank())
+                throw new AdminException("Firstname can't be blank", HttpStatus.BAD_REQUEST);
+            admin.setFirstname(dto.firstname());
+        }
+        if (dto.lastname() != null) {
+            if (dto.lastname().isBlank())
+                throw new AdminException("Lastname can't be blank", HttpStatus.BAD_REQUEST);
+            admin.setLastname(dto.lastname());
+        }
+        if (dto.password() != null) {
+            if (dto.password().isBlank())
+                throw new AdminException("Password can't be blank", HttpStatus.BAD_REQUEST);
+            admin.setPassword(dto.password());
+        }
+        if(dto.companyFunction()!=null){
+            if(dto.companyFunction().isBlank())
+                throw new AdminException("Company Function can't be blank", HttpStatus.BAD_REQUEST);
+            admin.setCompanyFunction(dto.companyFunction());
+        }
+
+        return adminRepository.save(admin);
+    }
+
+    private @NonNull Admin getAdmin(AdminPatchRequestDto dto, PersonRequestDto credentials) {
+        if (dto == null)
+            throw new AdminException("DTO is null", HttpStatus.BAD_REQUEST);
+        Optional<Admin> optAdmin = Optional.ofNullable(adminRepository.findByEmailAndPassword(credentials.email(), credentials.password()));
+        if (optAdmin.isEmpty())
+            throw new AdminException("Admin not found", HttpStatus.NOT_FOUND);
+        Admin admin = optAdmin.get();
+
+        if (!admin.getEmail().equals(credentials.email()) || !admin.getPassword().equals(credentials.password()))
+            throw new AdminException("Access denied", HttpStatus.FORBIDDEN);
+        return admin;
     }
 
 }
