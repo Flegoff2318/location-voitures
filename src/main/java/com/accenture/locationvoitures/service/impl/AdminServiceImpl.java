@@ -7,7 +7,7 @@ import com.accenture.locationvoitures.service.AdminService;
 import com.accenture.locationvoitures.service.dto.request.AdminPatchRequestDto;
 import com.accenture.locationvoitures.service.dto.request.AdminRequestDto;
 import com.accenture.locationvoitures.service.dto.request.PersonRequestDto;
-import com.accenture.locationvoitures.service.dto.response.AdminResponseDto;
+import com.accenture.locationvoitures.service.dto.response.admin.AdminResponseDto;
 import com.accenture.locationvoitures.service.mapper.AdminMapper;
 import com.accenture.locationvoitures.service.util.Util;
 import lombok.AllArgsConstructor;
@@ -71,7 +71,9 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public AdminResponseDto patch(AdminPatchRequestDto dto, PersonRequestDto credentials) {
         Util.verifyPerson(credentials);
-        Admin admin = getAdmin(dto, credentials);
+        if (dto == null)
+            throw new AdminException("DTO is null", HttpStatus.BAD_REQUEST);
+        Admin admin = getAdmin(credentials);
 
         Admin patched = patchAdminData(dto, admin);
         return adminMapper.toResponseDto(patched);
@@ -102,9 +104,7 @@ public class AdminServiceImpl implements AdminService {
         return adminRepository.save(admin);
     }
 
-    private @NonNull Admin getAdmin(AdminPatchRequestDto dto, PersonRequestDto credentials) {
-        if (dto == null)
-            throw new AdminException("DTO is null", HttpStatus.BAD_REQUEST);
+    private @NonNull Admin getAdmin(PersonRequestDto credentials) {
         Optional<Admin> optAdmin = Optional.ofNullable(adminRepository.findByEmailAndPassword(credentials.email(), credentials.password()));
         if (optAdmin.isEmpty())
             throw new AdminException("Admin not found", HttpStatus.NOT_FOUND);

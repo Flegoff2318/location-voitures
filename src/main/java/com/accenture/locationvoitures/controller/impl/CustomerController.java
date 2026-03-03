@@ -5,7 +5,7 @@ import com.accenture.locationvoitures.service.CustomerService;
 import com.accenture.locationvoitures.service.dto.request.CustomerPatchRequestDto;
 import com.accenture.locationvoitures.service.dto.request.CustomerRequestDto;
 import com.accenture.locationvoitures.service.dto.request.PersonRequestDto;
-import com.accenture.locationvoitures.service.dto.response.CustomerResponseDto;
+import com.accenture.locationvoitures.service.dto.response.customer.CustomerResponseDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
@@ -53,7 +53,7 @@ public class CustomerController implements CustomerApi {
         return ResponseEntity.ok(customerService.patch(dto,credentials));
     }
 
-    private static @NonNull PersonRequestDto getCredentials(String base64Header) {
+    private @NonNull PersonRequestDto getCredentials(String base64Header) {
         byte[] decoded = Base64.getDecoder().decode(base64Header.split(" ")[1]);
         String[] content = new String(decoded, StandardCharsets.UTF_8).split(":");
         return new PersonRequestDto(content[0], content[1]);

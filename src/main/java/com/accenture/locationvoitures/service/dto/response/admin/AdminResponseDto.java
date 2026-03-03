@@ -1,4 +1,4 @@
-package com.accenture.locationvoitures.service.dto.response;
+package com.accenture.locationvoitures.service.dto.response.admin;
 
 import java.util.UUID;
 

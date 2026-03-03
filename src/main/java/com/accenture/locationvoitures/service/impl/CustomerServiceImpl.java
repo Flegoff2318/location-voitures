@@ -10,7 +10,7 @@ import com.accenture.locationvoitures.service.CustomerService;
 import com.accenture.locationvoitures.service.dto.request.CustomerPatchRequestDto;
 import com.accenture.locationvoitures.service.dto.request.CustomerRequestDto;
 import com.accenture.locationvoitures.service.dto.request.PersonRequestDto;
-import com.accenture.locationvoitures.service.dto.response.CustomerResponseDto;
+import com.accenture.locationvoitures.service.dto.response.customer.CustomerResponseDto;
 import com.accenture.locationvoitures.service.mapper.CustomerMapper;
 import com.accenture.locationvoitures.service.util.Util;
 import lombok.AllArgsConstructor;
