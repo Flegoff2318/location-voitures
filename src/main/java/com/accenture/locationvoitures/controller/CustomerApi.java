@@ -3,7 +3,7 @@ package com.accenture.locationvoitures.controller;
 import com.accenture.locationvoitures.controller.advice.ErrorDto;
 import com.accenture.locationvoitures.service.dto.request.CustomerPatchRequestDto;
 import com.accenture.locationvoitures.service.dto.request.CustomerRequestDto;
-import com.accenture.locationvoitures.service.dto.response.CustomerResponseDto;
+import com.accenture.locationvoitures.service.dto.response.customer.CustomerResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

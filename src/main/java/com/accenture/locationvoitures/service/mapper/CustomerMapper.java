@@ -5,7 +5,7 @@ import com.accenture.locationvoitures.model.Customer;
 import com.accenture.locationvoitures.service.dto.request.AddressRequestDto;
 import com.accenture.locationvoitures.service.dto.request.CustomerPatchRequestDto;
 import com.accenture.locationvoitures.service.dto.request.CustomerRequestDto;
-import com.accenture.locationvoitures.service.dto.response.CustomerResponseDto;
+import com.accenture.locationvoitures.service.dto.response.customer.CustomerResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

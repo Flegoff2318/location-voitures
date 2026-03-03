@@ -3,7 +3,7 @@ package com.accenture.locationvoitures.service;
 import com.accenture.locationvoitures.service.dto.request.AdminPatchRequestDto;
 import com.accenture.locationvoitures.service.dto.request.AdminRequestDto;
 import com.accenture.locationvoitures.service.dto.request.PersonRequestDto;
-import com.accenture.locationvoitures.service.dto.response.AdminResponseDto;
+import com.accenture.locationvoitures.service.dto.response.admin.AdminResponseDto;
 
 import java.util.UUID;
 
