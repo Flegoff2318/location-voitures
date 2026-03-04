@@ -1,5 +1,7 @@
 package com.accenture.locationvoitures.model;
 
+import com.accenture.locationvoitures.model.enumeration.EFuelType;
+import com.accenture.locationvoitures.model.enumeration.ETransmission;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +15,7 @@ import lombok.NoArgsConstructor;
 @MappedSuperclass
 public abstract class FourWheeled extends Vehicle {
     private Integer numberOfSeats;
-    private FuelType fuelType;
-    private Transmission transmission;
+    private EFuelType fuelType;
+    private ETransmission transmission;
     private Boolean airConditioning;
 }

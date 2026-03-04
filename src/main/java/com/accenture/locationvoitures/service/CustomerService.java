@@ -1,16 +1,15 @@
 package com.accenture.locationvoitures.service;
 
-import com.accenture.locationvoitures.service.dto.request.CustomerPatchRequestDto;
-import com.accenture.locationvoitures.service.dto.request.CustomerRequestDto;
-import com.accenture.locationvoitures.service.dto.request.PersonRequestDto;
-import com.accenture.locationvoitures.service.dto.response.customer.CustomerResponseDto;
+import com.accenture.locationvoitures.service.dto.request.person.patch.CustomerPatchRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.CustomerRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.PersonRequestDto;
+import com.accenture.locationvoitures.service.dto.response.customer.person.CustomerResponseDto;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface CustomerService {
-    // TODO : rename this method to add
-    CustomerResponseDto addCustomer(CustomerRequestDto dto);
+    CustomerResponseDto add(CustomerRequestDto dto);
 
     List<CustomerResponseDto> customers();
 

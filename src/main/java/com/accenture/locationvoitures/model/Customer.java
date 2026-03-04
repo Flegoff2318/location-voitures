@@ -1,5 +1,6 @@
 package com.accenture.locationvoitures.model;
 
+import com.accenture.locationvoitures.model.enumeration.EDrivingLicence;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
@@ -19,6 +20,6 @@ public class Customer extends Person {
     private Address address;
     private LocalDate birthday;
     private LocalDate registrationDate;
-    private List<DrivingLicence> drivingLicences;
+    private List<EDrivingLicence> drivingLicences;
     private boolean active;
 }

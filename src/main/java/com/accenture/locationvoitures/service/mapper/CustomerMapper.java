@@ -2,10 +2,10 @@ package com.accenture.locationvoitures.service.mapper;
 
 import com.accenture.locationvoitures.model.Address;
 import com.accenture.locationvoitures.model.Customer;
-import com.accenture.locationvoitures.service.dto.request.AddressRequestDto;
-import com.accenture.locationvoitures.service.dto.request.CustomerPatchRequestDto;
-import com.accenture.locationvoitures.service.dto.request.CustomerRequestDto;
-import com.accenture.locationvoitures.service.dto.response.customer.CustomerResponseDto;
+import com.accenture.locationvoitures.service.dto.request.person.AddressRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.patch.CustomerPatchRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.CustomerRequestDto;
+import com.accenture.locationvoitures.service.dto.response.customer.person.CustomerResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

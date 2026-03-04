@@ -2,10 +2,10 @@ package com.accenture.locationvoitures.controller.impl;
 
 import com.accenture.locationvoitures.controller.CustomerApi;
 import com.accenture.locationvoitures.service.CustomerService;
-import com.accenture.locationvoitures.service.dto.request.CustomerPatchRequestDto;
-import com.accenture.locationvoitures.service.dto.request.CustomerRequestDto;
-import com.accenture.locationvoitures.service.dto.request.PersonRequestDto;
-import com.accenture.locationvoitures.service.dto.response.customer.CustomerResponseDto;
+import com.accenture.locationvoitures.service.dto.request.person.patch.CustomerPatchRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.CustomerRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.PersonRequestDto;
+import com.accenture.locationvoitures.service.dto.response.customer.person.CustomerResponseDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
@@ -24,7 +24,7 @@ public class CustomerController implements CustomerApi {
 
     @Override
     public ResponseEntity<Void> create(@Valid CustomerRequestDto dto) {
-        CustomerResponseDto responseDto = customerService.addCustomer(dto);
+        CustomerResponseDto responseDto = customerService.add(dto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

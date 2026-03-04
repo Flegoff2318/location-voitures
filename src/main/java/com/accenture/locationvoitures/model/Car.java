@@ -1,5 +1,7 @@
 package com.accenture.locationvoitures.model;
 
+import com.accenture.locationvoitures.model.enumeration.ECarType;
+import com.accenture.locationvoitures.model.enumeration.EDrivingLicence;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,14 +14,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class Car extends FourWheeled{
-    private CarType carType;
+    private ECarType carType;
     private Integer numberOfLuggage;
     private Integer numberOfDoors;
 
     public void evaluateRequiredDrivingLicence(){
         if(getNumberOfSeats()<=9)
-            setRequiredDrivingLicence(DrivingLicence.B);
+            setRequiredDrivingLicence(EDrivingLicence.B);
         if(getNumberOfSeats()>=10 && getNumberOfSeats()<=16)
-            setRequiredDrivingLicence(DrivingLicence.D1);
+            setRequiredDrivingLicence(EDrivingLicence.D1);
     }
 }
