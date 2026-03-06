@@ -18,7 +18,7 @@ public final class UtilityRequestDto extends FourWheeledRequestDto {
     Double haulingCapacity;
     @NotNull
     @Min(1)
-    Integer ptac;
+    Double ptac;
     @NotBlank
     String utilityType;
 }

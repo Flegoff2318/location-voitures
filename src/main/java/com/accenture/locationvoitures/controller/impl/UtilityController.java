@@ -1,11 +1,11 @@
 package com.accenture.locationvoitures.controller.impl;
 
-import com.accenture.locationvoitures.controller.CarApi;
-import com.accenture.locationvoitures.service.CarService;
-import com.accenture.locationvoitures.service.dto.request.vehicle.CarRequestDto;
+import com.accenture.locationvoitures.controller.UtilityApi;
+import com.accenture.locationvoitures.service.UtilityService;
 import com.accenture.locationvoitures.service.dto.request.person.PersonRequestDto;
-import com.accenture.locationvoitures.service.dto.request.vehicle.patch.CarPatchRequestDto;
-import com.accenture.locationvoitures.service.dto.response.admin.vehicle.CarAdminResponseDto;
+import com.accenture.locationvoitures.service.dto.request.vehicle.UtilityRequestDto;
+import com.accenture.locationvoitures.service.dto.request.vehicle.patch.UtilityPatchRequestDto;
+import com.accenture.locationvoitures.service.dto.response.admin.vehicle.UtilityAdminResponseDto;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.http.ResponseEntity;
@@ -17,52 +17,51 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
-
 @RestController
 @AllArgsConstructor
-public class CarController implements CarApi {
-    private final CarService carService;
-
+public class UtilityController implements UtilityApi {
+    private final UtilityService utilityService;
     @Override
-    public ResponseEntity<Void> create(CarRequestDto dto, String base64Header) {
+    public ResponseEntity<Void> create(UtilityRequestDto dto, String base64Header) {
         PersonRequestDto credentials = getCredentials(base64Header);
-        CarAdminResponseDto responseDto = carService.add(dto,credentials);
+        UtilityAdminResponseDto responseDto = utilityService.add(dto,credentials);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(responseDto.uuid())
                 .toUri();
-        return ResponseEntity.created(location).build();    }
-
-    @Override
-    public ResponseEntity<List<CarAdminResponseDto>> getCars(Boolean active, Boolean outoffleet, String base64Header) {
-        PersonRequestDto credentials = getCredentials(base64Header);
-        if(active!=null && outoffleet!=null)
-            return ResponseEntity.ok(carService.findByVehicleMetaDataActiveAndVehicleMetaDataOutOfFleet(active,outoffleet,credentials));
-        if(active!=null)
-            return ResponseEntity.ok(carService.findByVehicleMetaDataActive(active,credentials));
-        if(outoffleet!=null)
-            return ResponseEntity.ok(carService.findByVehicleMetaDataOutOfFleet(outoffleet,credentials));
-        return ResponseEntity.ok(carService.findAll(credentials));
+        return ResponseEntity.created(location).build();
     }
 
     @Override
-    public ResponseEntity<CarAdminResponseDto> getById(UUID id, String base64Header) {
+    public ResponseEntity<List<UtilityAdminResponseDto>> getUtilities(Boolean active, Boolean outoffleet, String base64Header) {
         PersonRequestDto credentials = getCredentials(base64Header);
-        return ResponseEntity.ok(carService.getById(id,credentials));
+        if(active!=null && outoffleet!=null)
+            return ResponseEntity.ok(utilityService.findByVehicleMetaDataActiveAndVehicleMetaDataOutOfFleet(active,outoffleet,credentials));
+        if(active!=null)
+            return ResponseEntity.ok(utilityService.findByVehicleMetaDataActive(active,credentials));
+        if(outoffleet!=null)
+            return ResponseEntity.ok(utilityService.findByVehicleMetaDataOutOfFleet(outoffleet,credentials));
+        return ResponseEntity.ok(utilityService.findAll(credentials));
+    }
+
+    @Override
+    public ResponseEntity<UtilityAdminResponseDto> getById(UUID id, String base64Header) {
+        PersonRequestDto credentials = getCredentials(base64Header);
+        return ResponseEntity.ok(utilityService.getById(id,credentials));
     }
 
     @Override
     public ResponseEntity<Void> deleteById(UUID id, String base64Header) {
         PersonRequestDto credentials = getCredentials(base64Header);
-        carService.delete(id,credentials);
+        utilityService.delete(id,credentials);
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<CarAdminResponseDto> patch(UUID id, CarPatchRequestDto dto, String base64Header) {
+    public ResponseEntity<UtilityAdminResponseDto> patch(UUID id, UtilityPatchRequestDto dto, String base64Header) {
         PersonRequestDto credentials = getCredentials(base64Header);
-        return ResponseEntity.ok(carService.patch(id,dto,credentials));
+        return ResponseEntity.ok(utilityService.patch(id,dto,credentials));
     }
 
     private @NonNull PersonRequestDto getCredentials(String base64Header) {

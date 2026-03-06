@@ -2,11 +2,8 @@ package com.accenture.locationvoitures.controller;
 
 import com.accenture.locationvoitures.controller.advice.ErrorDto;
 import com.accenture.locationvoitures.service.dto.request.vehicle.CampingCarRequestDto;
-import com.accenture.locationvoitures.service.dto.request.vehicle.CarRequestDto;
 import com.accenture.locationvoitures.service.dto.request.vehicle.patch.CampingCarPatchRequestDto;
-import com.accenture.locationvoitures.service.dto.request.vehicle.patch.CarPatchRequestDto;
 import com.accenture.locationvoitures.service.dto.response.admin.vehicle.CampingCarAdminResponseDto;
-import com.accenture.locationvoitures.service.dto.response.admin.vehicle.CarAdminResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,6 +22,7 @@ public interface CampingCarApi {
     @Operation(summary = "Create a new camping-car")
     @ApiResponse(responseCode = "201", description = "Camping-car created", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+    @ApiResponse(responseCode = "403", description = "Access forbidden", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @PostMapping
     ResponseEntity<Void> create(@RequestBody @Valid CampingCarRequestDto dto, @RequestHeader(name = "authorization") String base64Header);
 

@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public final class CampingCarRequestDto extends FourWheeledRequestDto {
     @NotNull
     @Min(0)
-    private Integer ptac;
+    private Double ptac;
     @NotNull
     @Min(0)
     private Double height;

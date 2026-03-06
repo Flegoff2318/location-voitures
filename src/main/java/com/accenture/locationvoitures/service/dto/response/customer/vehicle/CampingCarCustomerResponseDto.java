@@ -16,7 +16,7 @@ public record CampingCarCustomerResponseDto(
         String transmission,
         Boolean airConditioning,
 
-        Integer ptac,
+        Double ptac,
         Double height,
         CampingCarEquipmentResponseDto campingCarEquipment,
 

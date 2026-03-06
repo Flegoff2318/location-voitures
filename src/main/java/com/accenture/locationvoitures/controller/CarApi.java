@@ -22,31 +22,32 @@ public interface CarApi {
     @Operation(summary = "Create a new car")
     @ApiResponse(responseCode = "201", description = "Car created", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+    @ApiResponse(responseCode = "403", description = "Access forbidden", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @PostMapping
     ResponseEntity<Void> create(@RequestBody @Valid CarRequestDto dto, @RequestHeader(name = "authorization") String base64Header);
 
-    @Operation(summary = "Get Cars, params : active={true,false}, outoffleet={true,false}")
+    @Operation(summary = "Get cars, params : active={true,false}, outoffleet={true,false}")
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @ApiResponse(responseCode = "403", description = "Access forbidden", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @GetMapping
     ResponseEntity<List<CarAdminResponseDto>> getCars(@RequestParam(required = false) Boolean active, @RequestParam(required = false) Boolean outoffleet, @RequestHeader(name = "authorization") String base64Header);
 
-    @Operation(summary = "Get Car By Id")
+    @Operation(summary = "Get car by id")
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @ApiResponse(responseCode = "403", description = "Access forbidden", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @GetMapping("/{id}")
     ResponseEntity<CarAdminResponseDto> getById(@PathVariable("id") UUID id, @RequestHeader(name = "authorization") String base64Header);
 
-    @Operation(summary = "Delete Car By Id")
+    @Operation(summary = "Delete car by id")
     @ApiResponse(responseCode = "204", description = "No content")
     @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @ApiResponse(responseCode = "403", description = "Access forbidden", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteById(@PathVariable("id") UUID id, @RequestHeader(name = "authorization") String base64Header);
 
-    @Operation(summary = "Patch Car")
+    @Operation(summary = "Patch car")
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @ApiResponse(responseCode = "403", description = "Access forbidden", content = @Content(schema = @Schema(implementation = ErrorDto.class)))

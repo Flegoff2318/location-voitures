@@ -2,7 +2,7 @@ package com.accenture.locationvoitures.service.dto.response.customer.vehicle;
 
 import java.util.UUID;
 
-public record MotorBikeCustomerResponseDto(
+public record MotorbikeCustomerResponseDto(
         UUID uuid,
         String brand,
         String model,

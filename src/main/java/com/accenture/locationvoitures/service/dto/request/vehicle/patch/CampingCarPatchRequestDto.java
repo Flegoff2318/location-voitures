@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public final class CampingCarPatchRequestDto extends FourWheeledPatchRequestDto {
     @Min(0)
-    private Integer ptac;
+    private Double ptac;
     @Min(0)
     private Double height;
     @Valid

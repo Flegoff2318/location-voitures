@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
@@ -42,6 +44,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CustomerResponseDto> customers() {
         return List.of();
     }
@@ -54,11 +57,12 @@ public class CustomerServiceImpl implements CustomerService {
             throw new CustomerException("User not found", HttpStatus.NOT_FOUND);
         Customer customer = optCustomer.get();
         if (!customer.getEmail().equals(credentials.email()) || !customer.getPassword().equals(credentials.password()))
-            throw new CustomerException("Access denied", HttpStatus.FORBIDDEN);
+            throw new CustomerException("Access forbidden", HttpStatus.FORBIDDEN);
         return customerMapper.toResponseDto(customer);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CustomerResponseDto getCustomerDetailsByCredentials(PersonRequestDto credentials) {
         Util.verifyPerson(credentials);
         Customer customer = customerRepository.findByEmailAndPassword(credentials.email(), credentials.password());
@@ -73,7 +77,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new CustomerException("User not found", HttpStatus.NOT_FOUND);
         Customer customer = optCustomer.get();
         if (!customer.getEmail().equals(credentials.email()) || !customer.getPassword().equals(credentials.password()))
-            throw new CustomerException("Access denied", HttpStatus.FORBIDDEN);
+            throw new CustomerException("Access forbidden", HttpStatus.FORBIDDEN);
         customerRepository.delete(customer);
     }
 
@@ -165,7 +169,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new CustomerException("User not found", HttpStatus.NOT_FOUND);
         Customer customer = optCustomer.get();
         if (!customer.getEmail().equals(credentials.email()) || !customer.getPassword().equals(credentials.password()))
-            throw new CustomerException("Access denied", HttpStatus.FORBIDDEN);
+            throw new CustomerException("Access forbidden", HttpStatus.FORBIDDEN);
         return customer;
     }
 }

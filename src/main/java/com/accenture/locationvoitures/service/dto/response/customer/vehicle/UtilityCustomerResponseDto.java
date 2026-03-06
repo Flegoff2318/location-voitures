@@ -15,7 +15,7 @@ public record UtilityCustomerResponseDto(
         Boolean airConditioning,
 
         Double haulingCapacity,
-        Integer ptac,
+        Double ptac,
 
         String utilityType
 ) implements FourWheeledCustomerResponseDto {

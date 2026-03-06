@@ -15,7 +15,7 @@ public record BikeAdminResponseDto(
         Boolean discBrakes,
 
         Boolean isElectric,
-        Integer batteryCapacty,
+        Integer batteryCapacity,
         Double autonomy,
 
         String bikeType

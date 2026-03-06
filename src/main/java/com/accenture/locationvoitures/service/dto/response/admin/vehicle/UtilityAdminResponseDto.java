@@ -16,7 +16,7 @@ public record UtilityAdminResponseDto(
         Boolean airConditioning,
 
         Double haulingCapacity,
-        Integer ptac,
+        Double ptac,
 
         String utilityType
 ) implements FourWheeledAdminResponseDto {

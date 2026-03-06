@@ -14,12 +14,14 @@ import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
     private final AdminMapper adminMapper;
@@ -34,6 +36,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AdminResponseDto getAdminDetailsById(UUID uuid, PersonRequestDto dto) {
         Util.verifyPerson(dto);
         Optional<Admin> optAdmin = adminRepository.findById(uuid);
@@ -41,18 +44,19 @@ public class AdminServiceImpl implements AdminService {
             throw new AdminException("Admin not found", HttpStatus.NOT_FOUND);
         Admin admin = optAdmin.get();
         if (!admin.getEmail().equals(dto.email()) || !admin.getPassword().equals(dto.password()))
-            throw new AdminException("Access denied", HttpStatus.FORBIDDEN);
+            throw new AdminException("Access forbidden", HttpStatus.FORBIDDEN);
         return adminMapper.toResponseDto(admin);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AdminResponseDto getAdminDetailsByCredentials(PersonRequestDto credentials) {
         Util.verifyPerson(credentials);
         Admin admin = adminRepository.findByEmailAndPassword(credentials.email(), credentials.password());
         if (admin == null)
             throw new AdminException("Admin not found", HttpStatus.NOT_FOUND);
         if (!admin.getEmail().equals(credentials.email()) || !admin.getPassword().equals(credentials.password()))
-            throw new AdminException("Access denied", HttpStatus.FORBIDDEN);
+            throw new AdminException("Access forbidden", HttpStatus.FORBIDDEN);
         return adminMapper.toResponseDto(admin);
     }
 
@@ -64,7 +68,7 @@ public class AdminServiceImpl implements AdminService {
             throw new AdminException("Admin not found", HttpStatus.NOT_FOUND);
         Admin admin = optAdmin.get();
         if (!admin.getEmail().equals(credentials.email()) || !admin.getPassword().equals(credentials.password()))
-            throw new AdminException("Access denied", HttpStatus.FORBIDDEN);
+            throw new AdminException("Access forbidden", HttpStatus.FORBIDDEN);
         adminRepository.delete(admin);
     }
 
@@ -111,7 +115,7 @@ public class AdminServiceImpl implements AdminService {
         Admin admin = optAdmin.get();
 
         if (!admin.getEmail().equals(credentials.email()) || !admin.getPassword().equals(credentials.password()))
-            throw new AdminException("Access denied", HttpStatus.FORBIDDEN);
+            throw new AdminException("Access forbidden", HttpStatus.FORBIDDEN);
         return admin;
     }
 

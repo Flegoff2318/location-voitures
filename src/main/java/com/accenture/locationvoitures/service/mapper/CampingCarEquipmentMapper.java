@@ -1,6 +1,8 @@
 package com.accenture.locationvoitures.service.mapper;
 
 import com.accenture.locationvoitures.model.CampingCarEquipment;
+import com.accenture.locationvoitures.service.dto.request.vehicle.CampingCarEquipmentRequestDto;
+import com.accenture.locationvoitures.service.dto.request.vehicle.patch.CampingCarEquipmentPatchRequestDto;
 import com.accenture.locationvoitures.service.dto.response.CampingCarEquipmentResponseDto;
 import org.mapstruct.Mapper;
 

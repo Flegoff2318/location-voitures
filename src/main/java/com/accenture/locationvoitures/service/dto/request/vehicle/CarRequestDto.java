@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 public final class CarRequestDto extends FourWheeledRequestDto {
     @NotBlank
     private String carType;
-
     @Min(0)
     @NotNull
     private Integer numberOfLuggage;
