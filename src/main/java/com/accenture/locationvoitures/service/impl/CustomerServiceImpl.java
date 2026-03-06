@@ -4,19 +4,20 @@ import com.accenture.locationvoitures.exception.AddressException;
 import com.accenture.locationvoitures.exception.CustomerException;
 import com.accenture.locationvoitures.model.Address;
 import com.accenture.locationvoitures.model.Customer;
-import com.accenture.locationvoitures.model.DrivingLicence;
+import com.accenture.locationvoitures.model.enumeration.EDrivingLicence;
 import com.accenture.locationvoitures.repository.CustomerRepository;
 import com.accenture.locationvoitures.service.CustomerService;
-import com.accenture.locationvoitures.service.dto.request.CustomerPatchRequestDto;
-import com.accenture.locationvoitures.service.dto.request.CustomerRequestDto;
-import com.accenture.locationvoitures.service.dto.request.PersonRequestDto;
-import com.accenture.locationvoitures.service.dto.response.customer.CustomerResponseDto;
+import com.accenture.locationvoitures.service.dto.request.person.patch.CustomerPatchRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.CustomerRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.PersonRequestDto;
+import com.accenture.locationvoitures.service.dto.response.customer.person.CustomerResponseDto;
 import com.accenture.locationvoitures.service.mapper.CustomerMapper;
 import com.accenture.locationvoitures.service.util.Util;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,13 +26,14 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
 
 
     @Override
-    public CustomerResponseDto addCustomer(CustomerRequestDto dto) {
+    public CustomerResponseDto add(CustomerRequestDto dto) {
         Util.verifyCustomer(dto);
 
         Customer customer = customerMapper.toEntity(dto);
@@ -42,6 +44,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CustomerResponseDto> customers() {
         return List.of();
     }
@@ -54,11 +57,12 @@ public class CustomerServiceImpl implements CustomerService {
             throw new CustomerException("User not found", HttpStatus.NOT_FOUND);
         Customer customer = optCustomer.get();
         if (!customer.getEmail().equals(credentials.email()) || !customer.getPassword().equals(credentials.password()))
-            throw new CustomerException("Access denied", HttpStatus.FORBIDDEN);
+            throw new CustomerException("Access forbidden", HttpStatus.FORBIDDEN);
         return customerMapper.toResponseDto(customer);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CustomerResponseDto getCustomerDetailsByCredentials(PersonRequestDto credentials) {
         Util.verifyPerson(credentials);
         Customer customer = customerRepository.findByEmailAndPassword(credentials.email(), credentials.password());
@@ -73,7 +77,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new CustomerException("User not found", HttpStatus.NOT_FOUND);
         Customer customer = optCustomer.get();
         if (!customer.getEmail().equals(credentials.email()) || !customer.getPassword().equals(credentials.password()))
-            throw new CustomerException("Access denied", HttpStatus.FORBIDDEN);
+            throw new CustomerException("Access forbidden", HttpStatus.FORBIDDEN);
         customerRepository.delete(customer);
     }
 
@@ -126,7 +130,7 @@ public class CustomerServiceImpl implements CustomerService {
             if (!dto.drivingLicences().isEmpty()) {
                 dto.drivingLicences().forEach(s -> {
                     try {
-                        DrivingLicence.valueOf(s);
+                        EDrivingLicence.valueOf(s);
                     } catch (IllegalArgumentException _) {
                         throw new CustomerException("Unknown Licence", HttpStatus.BAD_REQUEST);
                     }
@@ -165,7 +169,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new CustomerException("User not found", HttpStatus.NOT_FOUND);
         Customer customer = optCustomer.get();
         if (!customer.getEmail().equals(credentials.email()) || !customer.getPassword().equals(credentials.password()))
-            throw new CustomerException("Access denied", HttpStatus.FORBIDDEN);
+            throw new CustomerException("Access forbidden", HttpStatus.FORBIDDEN);
         return customer;
     }
 }

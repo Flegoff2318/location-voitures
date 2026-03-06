@@ -1,9 +1,9 @@
 package com.accenture.locationvoitures.service;
 
-import com.accenture.locationvoitures.service.dto.request.AdminPatchRequestDto;
-import com.accenture.locationvoitures.service.dto.request.AdminRequestDto;
-import com.accenture.locationvoitures.service.dto.request.PersonRequestDto;
-import com.accenture.locationvoitures.service.dto.response.admin.AdminResponseDto;
+import com.accenture.locationvoitures.service.dto.request.person.AdminPatchRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.AdminRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.PersonRequestDto;
+import com.accenture.locationvoitures.service.dto.response.admin.person.AdminResponseDto;
 
 import java.util.UUID;
 

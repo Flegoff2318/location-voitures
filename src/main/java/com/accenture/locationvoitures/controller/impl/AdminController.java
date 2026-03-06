@@ -2,10 +2,10 @@ package com.accenture.locationvoitures.controller.impl;
 
 import com.accenture.locationvoitures.controller.AdminApi;
 import com.accenture.locationvoitures.service.AdminService;
-import com.accenture.locationvoitures.service.dto.request.AdminPatchRequestDto;
-import com.accenture.locationvoitures.service.dto.request.AdminRequestDto;
-import com.accenture.locationvoitures.service.dto.request.PersonRequestDto;
-import com.accenture.locationvoitures.service.dto.response.admin.AdminResponseDto;
+import com.accenture.locationvoitures.service.dto.request.person.AdminPatchRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.AdminRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.PersonRequestDto;
+import com.accenture.locationvoitures.service.dto.response.admin.person.AdminResponseDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;

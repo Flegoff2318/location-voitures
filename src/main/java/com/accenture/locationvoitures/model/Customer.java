@@ -1,15 +1,18 @@
 package com.accenture.locationvoitures.model;
 
+import com.accenture.locationvoitures.model.enumeration.EDrivingLicence;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +22,6 @@ public class Customer extends Person {
     private Address address;
     private LocalDate birthday;
     private LocalDate registrationDate;
-    private List<DrivingLicence> drivingLicences;
+    private List<EDrivingLicence> drivingLicences;
     private boolean active;
 }

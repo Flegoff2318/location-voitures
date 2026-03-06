@@ -1,8 +1,8 @@
 package com.accenture.locationvoitures.service.mapper;
 
 import com.accenture.locationvoitures.model.VehicleMetaData;
-import com.accenture.locationvoitures.service.dto.request.VehicleMetaDataRequestDto;
-import com.accenture.locationvoitures.service.dto.response.admin.VehicleMetaDataResponseDto;
+import com.accenture.locationvoitures.service.dto.request.vehicle.VehicleMetaDataRequestDto;
+import com.accenture.locationvoitures.service.dto.response.admin.vehicle.VehicleMetaDataResponseDto;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

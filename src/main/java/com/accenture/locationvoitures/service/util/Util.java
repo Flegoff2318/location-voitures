@@ -4,10 +4,10 @@ import com.accenture.locationvoitures.exception.AddressException;
 import com.accenture.locationvoitures.exception.AdminException;
 import com.accenture.locationvoitures.exception.CustomerException;
 import com.accenture.locationvoitures.exception.PersonException;
-import com.accenture.locationvoitures.service.dto.request.AddressRequestDto;
-import com.accenture.locationvoitures.service.dto.request.AdminRequestDto;
-import com.accenture.locationvoitures.service.dto.request.CustomerRequestDto;
-import com.accenture.locationvoitures.service.dto.request.PersonRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.AddressRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.AdminRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.CustomerRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.PersonRequestDto;
 import org.springframework.http.HttpStatus;
 
 public class Util {
