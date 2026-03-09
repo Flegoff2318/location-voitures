@@ -24,27 +24,25 @@ public class Utility extends FourWheeled {
     public void validate() {
         super.validate();
         if (this.getHaulingCapacity() == null)
-            throw new VehicleException("Hauling capacity is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("utility.haulingcapacity.null", HttpStatus.BAD_REQUEST);
         if (this.getHaulingCapacity() < 0)
-            throw new VehicleException("Hauling capacity must be superior to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("utility.haulingcapacity.invalid", HttpStatus.BAD_REQUEST);
         if (this.getPtac() == null)
-            throw new VehicleException("PTAC is null", HttpStatus.BAD_REQUEST);
-        if (this.getPtac() < 0)
-            throw new VehicleException("PTAC must be superior to 0", HttpStatus.BAD_REQUEST);
-        if (this.getPtac() >7.5)
-            throw new VehicleException("PTAC must be inferior to 7.5", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("ptac.null", HttpStatus.BAD_REQUEST);
+        if (this.getPtac() < 0 ||this.getPtac()>7.5)
+            throw new VehicleException("utility.ptac.invalid", HttpStatus.BAD_REQUEST);
         // MapStruct returns a null if the Enum Value is not found, so no additional check
         if (this.getUtilityType() == null)
-            throw new VehicleException("Utility type is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("utility.type.null", HttpStatus.BAD_REQUEST);
     }
 
     @Override
     public void checkUpdateData() {
         super.checkUpdateData();
         if (this.getHaulingCapacity() != null && this.getHaulingCapacity() < 0)
-            throw new VehicleException("Hauling capacity must be superior to 0", HttpStatus.BAD_REQUEST);
-        if (this.getPtac() != null && this.getPtac() < 0)
-            throw new VehicleException("PTAC must be superior to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("utility.haulingcapacity.invalid", HttpStatus.BAD_REQUEST);
+        if (this.getPtac() != null && (this.getPtac() < 0 || this.getPtac()>7.5))
+            throw new VehicleException("utility.ptac.invalid", HttpStatus.BAD_REQUEST);
     }
 
 

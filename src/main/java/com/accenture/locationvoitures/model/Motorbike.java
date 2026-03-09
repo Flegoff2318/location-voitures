@@ -29,46 +29,46 @@ public class Motorbike extends Vehicle {
     public void validate() {
         super.validate();
         if (this.getWeight() == null)
-            throw new VehicleException("Weight is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("motorbike.weight.null", HttpStatus.BAD_REQUEST);
         if (this.getWeight() < 0)
-            throw new VehicleException("Weight must be superior to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("motorbike.weight.invalid", HttpStatus.BAD_REQUEST);
         // MapStruct returns a null if the Enum Value is not found, so no additional check
         if (this.getTransmission() == null)
-            throw new VehicleException("Transmission is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("transmission.null", HttpStatus.BAD_REQUEST);
         if (this.getSeatHeight() == null)
-            throw new VehicleException("Seat height is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("motorbike.seatheight.null", HttpStatus.BAD_REQUEST);
         if (this.getSeatHeight() < 0)
-            throw new VehicleException("Seath height must be superior to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("motorbike.seatheight.invalid", HttpStatus.BAD_REQUEST);
         if (this.getPower() == null)
-            throw new VehicleException("Power is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("motorbike.power.null", HttpStatus.BAD_REQUEST);
         if (this.getPower() < 0)
-            throw new VehicleException("Power must be superior to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("motorbike.power.invalid", HttpStatus.BAD_REQUEST);
         if (this.getNumberOfCylinders() == null)
-            throw new VehicleException("Number of cylinders is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("motorbike.cylinders.null", HttpStatus.BAD_REQUEST);
         if (this.getNumberOfCylinders() < 0)
-            throw new VehicleException("Number of cylinders must be superior to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("motorbike.cylinders.invalid", HttpStatus.BAD_REQUEST);
         if (this.getEngineDisplacement() == null)
-            throw new VehicleException("Engine displacement is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("motorbike.enginedisplacement.null", HttpStatus.BAD_REQUEST);
         if (this.getEngineDisplacement() < 0)
-            throw new VehicleException("Engine displacement must be superior to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("motorbike.enginedisplacement.invalid", HttpStatus.BAD_REQUEST);
         // MapStruct returns a null if the Enum Value is not found, so no additional check
         if (this.getMotorBikeType() == null)
-            throw new VehicleException("Motorbike type is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("motorbike.type.null", HttpStatus.BAD_REQUEST);
     }
 
     @Override
     public void checkUpdateData() {
         super.checkUpdateData();
         if (this.getWeight() != null && this.getWeight() < 0)
-            throw new VehicleException("Weight must be superior to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("motorbike.weight.invalid", HttpStatus.BAD_REQUEST);
         if (this.getSeatHeight() != null && this.getSeatHeight() < 0)
-            throw new VehicleException("Seath height must be superior to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("motorbike.seatheight.invalid", HttpStatus.BAD_REQUEST);
         if (this.getPower() != null && this.getPower() < 0)
-            throw new VehicleException("Power must be superior to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("motorbike.power.invalid", HttpStatus.BAD_REQUEST);
         if (this.getNumberOfCylinders() != null && this.getNumberOfCylinders() < 0)
-            throw new VehicleException("Number of cylinders must be superior to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("motorbike.cylinders.invalid", HttpStatus.BAD_REQUEST);
         if (this.getEngineDisplacement() != null && this.getEngineDisplacement() < 0)
-            throw new VehicleException("Engine displacement must be superior to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("motorbike.enginedisplacement.invalid", HttpStatus.BAD_REQUEST);
     }
 
     public void applyPatch(Motorbike patchData) {

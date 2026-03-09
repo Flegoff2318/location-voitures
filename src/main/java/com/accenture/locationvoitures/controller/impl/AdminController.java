@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -25,6 +26,7 @@ public class AdminController implements AdminApi {
     @Override
     public ResponseEntity<Void> create(@Valid AdminRequestDto dto) {
         AdminResponseDto responseDto = adminService.addAdmin(dto);
+
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -34,22 +36,22 @@ public class AdminController implements AdminApi {
     }
 
     @Override
-    public ResponseEntity<AdminResponseDto> readAccountDetails(String base64Header) {
+    public ResponseEntity<AdminResponseDto> readAccountDetails(@RequestHeader(name = "authorization") String base64Header) {
         PersonRequestDto credentials = getCredentials(base64Header);
-        return ResponseEntity.ok(adminService.getAdminDetailsByCredentials(credentials));
+        return ResponseEntity.ok(adminService.getAdminDetailsByEmail(credentials.email()));
     }
 
     @Override
-    public ResponseEntity<AdminResponseDto> delete(String base64Header) {
+    public ResponseEntity<AdminResponseDto> delete(@RequestHeader(name = "authorization") String base64Header) {
         PersonRequestDto credentials = getCredentials(base64Header);
-        adminService.deleteAdmin(credentials);
+        adminService.deleteAdmin(credentials.email());
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<AdminResponseDto> patch(String base64Header, AdminPatchRequestDto dto) {
+    public ResponseEntity<AdminResponseDto> patch(@RequestHeader(name = "authorization") String base64Header,AdminPatchRequestDto dto) {
         PersonRequestDto credentials = getCredentials(base64Header);
-        return ResponseEntity.ok(adminService.patch(dto, credentials));
+        return ResponseEntity.ok(adminService.patch(credentials.email(), dto));
     }
 
     private @NonNull PersonRequestDto getCredentials(String base64Header) {

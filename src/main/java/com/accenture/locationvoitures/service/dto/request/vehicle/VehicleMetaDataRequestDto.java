@@ -4,9 +4,15 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 public record VehicleMetaDataRequestDto(
-        @NotNull @Min(0) Double dailyRentalPrice,
-        @NotNull @Min(0) Integer mileage,
-        @NotNull Boolean active,
-        @NotNull Boolean outOfFleet
+        @NotNull(message = "metadata.dailyrentalprice.null")
+        @Min(value = 0,message = "metadata.dailyrentalprice.invalid")
+        Double dailyRentalPrice,
+        @NotNull(message = "metadata.mileage.null")
+        @Min(value = 0, message = "metadata.mileage.invalid")
+        Integer mileage,
+        @NotNull(message = "metadata.active.null")
+        Boolean active,
+        @NotNull(message = "metadata.outoffleet.null")
+        Boolean outOfFleet
 ) {
 }

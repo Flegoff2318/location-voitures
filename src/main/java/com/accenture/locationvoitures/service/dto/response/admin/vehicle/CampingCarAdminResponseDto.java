@@ -1,5 +1,9 @@
 package com.accenture.locationvoitures.service.dto.response.admin.vehicle;
 
+import com.accenture.locationvoitures.model.enumeration.ECampingCarType;
+import com.accenture.locationvoitures.model.enumeration.EDrivingLicence;
+import com.accenture.locationvoitures.model.enumeration.EFuelType;
+import com.accenture.locationvoitures.model.enumeration.ETransmission;
 import com.accenture.locationvoitures.service.dto.response.CampingCarEquipmentResponseDto;
 
 import java.util.UUID;
@@ -9,18 +13,18 @@ public record CampingCarAdminResponseDto(
         String brand,
         String model,
         String color,
-        String requiredDrivingLicence,
+        EDrivingLicence requiredDrivingLicence,
         VehicleMetaDataResponseDto vehicleMetaData,
 
         Integer numberOfSeats,
-        String fuelType,
-        String transmission,
+        EFuelType fuelType,
+        ETransmission transmission,
         Boolean airConditioning,
 
         Double ptac,
         Double height,
         CampingCarEquipmentResponseDto campingCarEquipment,
 
-        String campingCarType
+        ECampingCarType campingCarType
 ) implements FourWheeledAdminResponseDto {
 }

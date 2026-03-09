@@ -32,27 +32,27 @@ public class VehicleMetaData {
 
     public void validate() {
         if(this.getDailyRentalPrice()==null)
-            throw new VehicleException("Daily rental price is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("metadata.dailyrentalprice.null", HttpStatus.BAD_REQUEST);
         if(this.getDailyRentalPrice()<=0)
-            throw new VehicleException("Daily rental price is equal or below 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("metadata.dailyrentalprice.invalid", HttpStatus.BAD_REQUEST);
         if(this.getMileage()==null)
-            throw new VehicleException("Mileage is null",HttpStatus.BAD_REQUEST);
+            throw new VehicleException("metadata.mileage.null",HttpStatus.BAD_REQUEST);
         if(this.getMileage()<0)
-            throw new VehicleException("Mileage is negative",HttpStatus.BAD_REQUEST);
+            throw new VehicleException("metadata.mileage.invalid",HttpStatus.BAD_REQUEST);
         if(this.getActive()==null)
-            throw new VehicleException("Active is null",HttpStatus.BAD_REQUEST);
+            throw new VehicleException("metadata.active.null",HttpStatus.BAD_REQUEST);
         if(this.getOutOfFleet()==null)
-            throw new VehicleException("Out of fleet is null",HttpStatus.BAD_REQUEST);
+            throw new VehicleException("metadata.outoffleet.null",HttpStatus.BAD_REQUEST);
         if(this.getOutOfFleet() && getActive())
-            throw new VehicleException("Vehicle can't be active & out of fleet at the same time",HttpStatus.BAD_REQUEST);
+            throw new VehicleException("metadata.activeoutoffleet",HttpStatus.BAD_REQUEST);
     }
     public void checkUpdateData(){
         if(this.getDailyRentalPrice()!=null && this.getDailyRentalPrice()<=0)
-            throw new VehicleException("Daily rental price is equal or below 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("metadata.dailyrentalprice.invalid", HttpStatus.BAD_REQUEST);
         if(this.getMileage()!=null && this.getMileage()<0)
-            throw new VehicleException("Mileage is negative",HttpStatus.BAD_REQUEST);
+            throw new VehicleException("metadata.mileage.invalid",HttpStatus.BAD_REQUEST);
         if(this.getOutOfFleet() && getActive())
-            throw new VehicleException("Vehicle can't be active & out of fleet at the same time",HttpStatus.BAD_REQUEST);
+            throw new VehicleException("metadata.activeoutoffleet",HttpStatus.BAD_REQUEST);
     }
 
     public void applyPatch(VehicleMetaData vehicleMetaData) {

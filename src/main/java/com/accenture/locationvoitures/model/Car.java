@@ -32,24 +32,24 @@ public class Car extends FourWheeled {
         super.validate();
         // MapStruct returns a null if the Enum Value is not found, so no additional check
         if (this.getCarType() == null)
-            throw new VehicleException("Car type is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("car.type.null", HttpStatus.BAD_REQUEST);
         if (this.getNumberOfLuggage() == null)
-            throw new VehicleException("Number of luggage is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("car.luggage.null", HttpStatus.BAD_REQUEST);
         if (this.getNumberOfLuggage() < 0)
-            throw new VehicleException("Number of luggage must be superior or equal to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("car.luggage.invalid", HttpStatus.BAD_REQUEST);
         if (this.getNumberOfDoors() == null)
-            throw new VehicleException("Number of doors is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("car.doors.null", HttpStatus.BAD_REQUEST);
         if (this.getNumberOfDoors() != 3 && this.getNumberOfDoors() != 5)
-            throw new VehicleException("Number of doors must be 3 or 5", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("car.doors.invalid", HttpStatus.BAD_REQUEST);
     }
 
     @Override
     public void checkUpdateData() {
         super.checkUpdateData();
         if (this.getNumberOfLuggage() != null && this.getNumberOfLuggage() < 0)
-            throw new VehicleException("Number of luggage must be superior or equal to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("car.luggage.invalid", HttpStatus.BAD_REQUEST);
         if (this.getNumberOfDoors() != null && this.getNumberOfDoors() != 3 && this.getNumberOfDoors() != 5)
-            throw new VehicleException("Number of doors must be 3 or 5", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("car.doors.invalid", HttpStatus.BAD_REQUEST);
     }
 
     public void applyPatch(Car patchData) {

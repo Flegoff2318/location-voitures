@@ -1,5 +1,9 @@
 package com.accenture.locationvoitures.service.dto.response.customer.vehicle;
 
+import com.accenture.locationvoitures.model.enumeration.EDrivingLicence;
+import com.accenture.locationvoitures.model.enumeration.EMotorbikeType;
+import com.accenture.locationvoitures.model.enumeration.ETransmission;
+
 import java.util.UUID;
 
 public record MotorbikeCustomerResponseDto(
@@ -7,15 +11,15 @@ public record MotorbikeCustomerResponseDto(
         String brand,
         String model,
         String color,
-        String requiredDrivingLicence,
+        EDrivingLicence requiredDrivingLicence,
 
         Integer weight,
-        String transmission,
+        ETransmission transmission,
         Integer seatHeight,
         Integer power,
         Integer numberOfCylinders,
         Integer engineDisplacement,
 
-        String motorBikeType
+        EMotorbikeType motorBikeType
 ) implements VehicleCustomerResponseDto {
 }

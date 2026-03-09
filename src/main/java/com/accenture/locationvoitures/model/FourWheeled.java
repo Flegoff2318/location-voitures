@@ -25,23 +25,25 @@ public abstract class FourWheeled extends Vehicle {
     public void validate() {
         super.validate();
         if (this.getNumberOfSeats() == null)
-            throw new VehicleException("Number of seats is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("fourwheeled.numberofseats.null", HttpStatus.BAD_REQUEST);
         if (this.getNumberOfSeats() < 1)
-            throw new VehicleException("Number of seats must superior to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("fourwheeled.numberofseats.invalid", HttpStatus.BAD_REQUEST);
+        if (this.getNumberOfSeats() > 16)
+            throw new VehicleException("fourwheeled.numberofseats.invalid", HttpStatus.BAD_REQUEST);
         // MapStruct returns a null if the Enum Value is not found, so no additional check
         if(this.getFuelType()==null)
-            throw new VehicleException("Fuel type is null",HttpStatus.BAD_REQUEST);
+            throw new VehicleException("fueltype.null",HttpStatus.BAD_REQUEST);
         if(this.getTransmission()==null)
-            throw new VehicleException("Transmission is null",HttpStatus.BAD_REQUEST);
+            throw new VehicleException("transmission.null",HttpStatus.BAD_REQUEST);
         if(this.getAirConditioning()==null)
-            throw new VehicleException("Air conditioning is null",HttpStatus.BAD_REQUEST);
+            throw new VehicleException("fourwheeled.airconditioning.null",HttpStatus.BAD_REQUEST);
     }
 
     @Override
     public void checkUpdateData(){
         super.checkUpdateData();
-        if (this.getNumberOfSeats() != null && this.getNumberOfSeats() < 1)
-            throw new VehicleException("Number of seats must superior to 0", HttpStatus.BAD_REQUEST);
+        if (this.getNumberOfSeats() != null && (this.getNumberOfSeats() < 1 || this.getNumberOfSeats()>16))
+            throw new VehicleException("fourwheeled.numberofseats.invalid", HttpStatus.BAD_REQUEST);
     }
 
     public void applyPatch(FourWheeled patchData) {

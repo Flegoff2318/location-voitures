@@ -1,5 +1,6 @@
 package com.accenture.locationvoitures.service.dto.request.vehicle;
 
+import com.accenture.locationvoitures.model.enumeration.EUtilityType;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,12 +14,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public final class UtilityRequestDto extends FourWheeledRequestDto {
-    @NotNull
-    @Min(0)
+    @NotNull(message = "utility.haulingcapacity.null")
+    @Min(value = 0,message = "utility.haulingcapacity.invalid")
     Double haulingCapacity;
-    @NotNull
-    @Min(1)
+    @NotNull(message = "utility.ptac.null")
+    @Min(value = 0,message = "utility.ptac.invalid")
     Double ptac;
-    @NotBlank
-    String utilityType;
+    @NotNull(message = "utility.type.null")
+    EUtilityType utilityType;
 }
