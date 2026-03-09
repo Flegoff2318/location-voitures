@@ -1,5 +1,8 @@
 package com.accenture.locationvoitures.service.dto.request.vehicle;
 
+import com.accenture.locationvoitures.model.enumeration.EFuelType;
+import com.accenture.locationvoitures.model.enumeration.ETransmission;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,13 +16,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class FourWheeledRequestDto extends VehicleRequestDto {
-    @Min(1)
-    @NotNull
-    Integer numberOfSeats;
-    @NotBlank
-    String fuelType;
-    @NotBlank
-    String transmission;
-    @NotNull
-    Boolean airConditioning;
+    @Min(value = 1,message = "fourwheeled.numberofseats.invalid")
+    @Max(value = 16,message = "fourwheeled.numberofseats.invalid")
+    @NotNull(message = "fourwheeled.numberofseats.null")
+    protected Integer numberOfSeats;
+    @NotNull(message = "fueltype.null")
+    protected EFuelType fuelType;
+    @NotNull(message = "transmission.null")
+    protected ETransmission transmission;
+    @NotNull(message = "fourwheeled.airconditioning.null")
+    protected Boolean airConditioning;
 }

@@ -1,5 +1,6 @@
 package com.accenture.locationvoitures.service.dto.request.vehicle.patch;
 
+import com.accenture.locationvoitures.model.enumeration.ECarType;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
@@ -12,10 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public final class CarPatchRequestDto extends FourWheeledPatchRequestDto {
-    private String carType;
-    @Min(0)
+    private ECarType carType;
+    @Min(value = 0,message = "car.luggage.invalid")
     private Integer numberOfLuggage;
-    @Min(3)
-    @Max(5)
+    @Min(value = 3,message = "car.doors.invalid")
+    @Max(value = 5,message = "car.doors.invalid")
     private Integer numberOfDoors;
 }

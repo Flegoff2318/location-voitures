@@ -12,6 +12,7 @@ public record CustomerResponseDto(
         String city,
         String email,
         String birthday,
-        List<String> drivingLicences
+        List<String> drivingLicences,
+        String role
 ) {
 }

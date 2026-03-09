@@ -1,5 +1,10 @@
 package com.accenture.locationvoitures.service.dto.response.admin.vehicle;
 
+import com.accenture.locationvoitures.model.enumeration.ECarType;
+import com.accenture.locationvoitures.model.enumeration.EDrivingLicence;
+import com.accenture.locationvoitures.model.enumeration.EFuelType;
+import com.accenture.locationvoitures.model.enumeration.ETransmission;
+
 import java.util.UUID;
 
 public record CarAdminResponseDto(
@@ -7,15 +12,15 @@ public record CarAdminResponseDto(
         String brand,
         String model,
         String color,
-        String requiredDrivingLicence,
+        EDrivingLicence requiredDrivingLicence,
         VehicleMetaDataResponseDto vehicleMetaData,
 
         Integer numberOfSeats,
-        String fuelType,
-        String transmission,
+        EFuelType fuelType,
+        ETransmission transmission,
         Boolean airConditioning,
 
         Integer numberOfLuggage,
-        String carType
+        ECarType carType
 ) implements FourWheeledAdminResponseDto {
 }

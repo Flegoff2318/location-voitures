@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class VehicleRequestDto {
-    @NotBlank(message = "Brand is null or blank")
-    String brand;
-    @NotBlank
-    String model;
-    @NotBlank
-    String color;
+    @NotBlank(message = "vehicle.brand.blank")
+    protected String brand;
+    @NotBlank(message = "vehicle.model.blank")
+    protected String model;
+    @NotBlank(message = "vehicle.color.blank")
+    protected String color;
     @Valid
-    @NotNull
-    VehicleMetaDataRequestDto vehicleMetaData;
+    @NotNull(message = "vehicle.metadata.null")
+    protected VehicleMetaDataRequestDto vehicleMetaData;
 }

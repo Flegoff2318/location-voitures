@@ -24,9 +24,8 @@ public class MotorbikeController implements MotorbikeApi {
     private final MotorbikeService motorbikeService;
 
     @Override
-    public ResponseEntity<Void> create(MotorbikeRequestDto dto, String base64Header) {
-        PersonRequestDto credentials = getCredentials(base64Header);
-        MotorbikeAdminResponseDto responseDto = motorbikeService.add(dto, credentials);
+    public ResponseEntity<Void> create(MotorbikeRequestDto dto) {
+        MotorbikeAdminResponseDto responseDto = motorbikeService.add(dto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -36,39 +35,29 @@ public class MotorbikeController implements MotorbikeApi {
     }
 
     @Override
-    public ResponseEntity<List<MotorbikeAdminResponseDto>> getMotorbikes(Boolean active, Boolean outoffleet, String base64Header) {
-        PersonRequestDto credentials = getCredentials(base64Header);
+    public ResponseEntity<List<MotorbikeAdminResponseDto>> getMotorbikes(Boolean active, Boolean outoffleet) {
         if (active != null && outoffleet != null)
-            return ResponseEntity.ok(motorbikeService.findByVehicleMetaDataActiveAndVehicleMetaDataOutOfFleet(active, outoffleet, credentials));
+            return ResponseEntity.ok(motorbikeService.findByVehicleMetaDataActiveAndVehicleMetaDataOutOfFleet(active, outoffleet));
         if (active != null)
-            return ResponseEntity.ok(motorbikeService.findByVehicleMetaDataActive(active, credentials));
+            return ResponseEntity.ok(motorbikeService.findByVehicleMetaDataActive(active));
         if (outoffleet != null)
-            return ResponseEntity.ok(motorbikeService.findByVehicleMetaDataOutOfFleet(outoffleet, credentials));
-        return ResponseEntity.ok(motorbikeService.findAll(credentials));
+            return ResponseEntity.ok(motorbikeService.findByVehicleMetaDataOutOfFleet(outoffleet));
+        return ResponseEntity.ok(motorbikeService.findAll());
     }
 
     @Override
-    public ResponseEntity<MotorbikeAdminResponseDto> getById(UUID id, String base64Header) {
-        PersonRequestDto credentials = getCredentials(base64Header);
-        return ResponseEntity.ok(motorbikeService.getById(id, credentials));
+    public ResponseEntity<MotorbikeAdminResponseDto> getById(UUID id) {
+        return ResponseEntity.ok(motorbikeService.getById(id));
     }
 
     @Override
-    public ResponseEntity<Void> deleteById(UUID id, String base64Header) {
-        PersonRequestDto credentials = getCredentials(base64Header);
-        motorbikeService.delete(id, credentials);
+    public ResponseEntity<Void> deleteById(UUID id) {
+        motorbikeService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<MotorbikeAdminResponseDto> patch(UUID id, MotorbikePatchRequestDto dto, String base64Header) {
-        PersonRequestDto credentials = getCredentials(base64Header);
-        return ResponseEntity.ok(motorbikeService.patch(id, dto, credentials));
-    }
-
-    private @NonNull PersonRequestDto getCredentials(String base64Header) {
-        byte[] decoded = Base64.getDecoder().decode(base64Header.split(" ")[1]);
-        String[] content = new String(decoded, StandardCharsets.UTF_8).split(":");
-        return new PersonRequestDto(content[0], content[1]);
+    public ResponseEntity<MotorbikeAdminResponseDto> patch(UUID id, MotorbikePatchRequestDto dto) {
+        return ResponseEntity.ok(motorbikeService.patch(id, dto));
     }
 }

@@ -21,4 +21,5 @@ public abstract class Person {
     @Column(unique = true, nullable = false)
     private String email;
     private String password;
+    private String role;
 }

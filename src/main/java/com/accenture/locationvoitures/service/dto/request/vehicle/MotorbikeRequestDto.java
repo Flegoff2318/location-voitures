@@ -1,5 +1,7 @@
 package com.accenture.locationvoitures.service.dto.request.vehicle;
 
+import com.accenture.locationvoitures.model.enumeration.EMotorbikeType;
+import com.accenture.locationvoitures.model.enumeration.ETransmission;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,24 +15,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public final class MotorbikeRequestDto extends VehicleRequestDto {
-    @NotNull
-    @Min(1)
+    @NotNull(message = "motorbike.weight.null")
+    @Min(value = 1,message = "motorbike.weight.invalid")
     private Integer weight;
-    @NotBlank
-    private String transmission;
-    @NotNull
-    @Min(1)
+    @NotNull(message = "transmission.null")
+    private ETransmission transmission;
+    @NotNull(message = "motorbike.seatheight.null")
+    @Min(value = 1,message = "motorbike.seatheight.invalid")
     private Integer seatHeight; // Centimeters
-    @NotNull
-    @Min(1)
+    @NotNull(message = "motorbike.power.null")
+    @Min(value = 1,message = "motorbike.power.invalid")
     private Integer power;
-    @NotNull
-    @Min(1)
+    @NotNull(message = "motorbike.cylinders.null")
+    @Min(value = 1,message = "motorbike.cylinders.invalid")
     private Integer numberOfCylinders;
-    @NotNull
-    @Min(1)
+    @NotNull(message = "motorbike.enginedisplacement.null")
+    @Min(value = 1,message = "motorbike.enginedisplacement.invalid")
     private Integer engineDisplacement; // CC
-    @NotBlank
-    private String motorBikeType;
+    @NotNull(message = "motorbike.type.null")
+    private EMotorbikeType motorBikeType;
 
 }

@@ -30,30 +30,28 @@ public class CampingCar extends FourWheeled {
     public void validate() {
         super.validate();
         if (this.getPtac() == null)
-            throw new VehicleException("PTAC is null", HttpStatus.BAD_REQUEST);
-        if (this.getPtac() < 0)
-            throw new VehicleException("PTAC must be superior to 0", HttpStatus.BAD_REQUEST);
-        if(this.getPtac() >7.5)
-            throw new VehicleException("PTAC must be inferior to 7.5",HttpStatus.BAD_REQUEST);
+            throw new VehicleException("ptac.null", HttpStatus.BAD_REQUEST);
+        if (this.getPtac() < 0 || this.getPtac()>7.5)
+            throw new VehicleException("campingcar.ptac.invalid", HttpStatus.BAD_REQUEST);
         if (this.getHeight() == null)
-            throw new VehicleException("Height is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("campingcar.height.null", HttpStatus.BAD_REQUEST);
         if (this.getHeight() < 0)
-            throw new VehicleException("Height must be superior to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("campingcar.height.invalid", HttpStatus.BAD_REQUEST);
         if (this.getCampingCarEquipment() == null)
-            throw new VehicleException("Caming-car equipment is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("campingcar.equipment.null", HttpStatus.BAD_REQUEST);
         // MapStruct returns a null if the Enum Value is not found, so no additional check
         if (this.getCampingCarType() == null)
-            throw new VehicleException("Camping-car type is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("campingcar.type.null", HttpStatus.BAD_REQUEST);
         this.getCampingCarEquipment().validate();
     }
 
     @Override
     public void checkUpdateData() {
         super.checkUpdateData();
-        if (this.getPtac() != null && this.getPtac() < 0)
-            throw new VehicleException("PTAC must be superior to 0", HttpStatus.BAD_REQUEST);
+        if (this.getPtac() != null && (this.getPtac() < 0 || this.getPtac()>7.5))
+            throw new VehicleException("campingcar.ptac.invalid", HttpStatus.BAD_REQUEST);
         if (this.getHeight() != null && this.getHeight() < 0)
-            throw new VehicleException("Height must be superior to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("campingcar.height.invalid", HttpStatus.BAD_REQUEST);
         if (this.getCampingCarEquipment() != null)
             this.getCampingCarEquipment().checkUpdateData();
     }

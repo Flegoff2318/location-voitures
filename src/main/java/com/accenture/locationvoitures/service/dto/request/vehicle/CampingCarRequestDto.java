@@ -1,5 +1,6 @@
 package com.accenture.locationvoitures.service.dto.request.vehicle;
 
+import com.accenture.locationvoitures.model.enumeration.ECampingCarType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -14,15 +15,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public final class CampingCarRequestDto extends FourWheeledRequestDto {
-    @NotNull
-    @Min(0)
+    @NotNull(message = "campingcar.ptac.null")
+    @Min(value = 0,message = "campingcar.ptac.invalid")
     private Double ptac;
-    @NotNull
-    @Min(0)
+    @NotNull(message = "campingcar.height.null")
+    @Min(value = 1,message = "campingcar.height.invalid")
     private Double height;
     @Valid
-    @NotNull
+    @NotNull(message = "campingcar.equipment.null")
     private CampingCarEquipmentRequestDto campingCarEquipment;
-    @NotBlank
-    private String campingCarType;
+    @NotNull(message = "campingcar.type.null")
+    private ECampingCarType campingCarType;
 }

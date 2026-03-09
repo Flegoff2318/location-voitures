@@ -1,5 +1,7 @@
 package com.accenture.locationvoitures.service.dto.response.admin.vehicle;
 
+import com.accenture.locationvoitures.model.enumeration.EDrivingLicence;
+
 import java.util.UUID;
 
 public sealed interface VehicleAdminResponseDto permits FourWheeledAdminResponseDto, MotorbikeAdminResponseDto, BikeAdminResponseDto {
@@ -8,6 +10,6 @@ public sealed interface VehicleAdminResponseDto permits FourWheeledAdminResponse
     String model();
     String color();
 
-    String requiredDrivingLicence();
+    EDrivingLicence requiredDrivingLicence();
     VehicleMetaDataResponseDto vehicleMetaData();
 }

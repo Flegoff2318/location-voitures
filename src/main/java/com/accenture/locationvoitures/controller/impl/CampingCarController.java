@@ -24,9 +24,9 @@ public class CampingCarController implements CampingCarApi {
     private final CampingCarService campingCarService;
 
     @Override
-    public ResponseEntity<Void> create(CampingCarRequestDto dto, String base64Header) {
-        PersonRequestDto credentials = getCredentials(base64Header);
-        CampingCarAdminResponseDto responseDto = campingCarService.add(dto, credentials);
+    public ResponseEntity<Void> create(CampingCarRequestDto dto) {
+        
+        CampingCarAdminResponseDto responseDto = campingCarService.add(dto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -36,39 +36,33 @@ public class CampingCarController implements CampingCarApi {
     }
 
     @Override
-    public ResponseEntity<List<CampingCarAdminResponseDto>> getCampingCars(Boolean active, Boolean outoffleet, String base64Header) {
-        PersonRequestDto credentials = getCredentials(base64Header);
+    public ResponseEntity<List<CampingCarAdminResponseDto>> getCampingCars(Boolean active, Boolean outoffleet) {
+        
         if (active != null && outoffleet != null)
-            return ResponseEntity.ok(campingCarService.findByVehicleMetaDataActiveAndVehicleMetaDataOutOfFleet(active, outoffleet, credentials));
+            return ResponseEntity.ok(campingCarService.findByVehicleMetaDataActiveAndVehicleMetaDataOutOfFleet(active, outoffleet));
         if (active != null)
-            return ResponseEntity.ok(campingCarService.findByVehicleMetaDataActive(active, credentials));
+            return ResponseEntity.ok(campingCarService.findByVehicleMetaDataActive(active));
         if (outoffleet != null)
-            return ResponseEntity.ok(campingCarService.findByVehicleMetaDataOutOfFleet(outoffleet, credentials));
-        return ResponseEntity.ok(campingCarService.findAll(credentials));
+            return ResponseEntity.ok(campingCarService.findByVehicleMetaDataOutOfFleet(outoffleet));
+        return ResponseEntity.ok(campingCarService.findAll());
     }
 
     @Override
-    public ResponseEntity<CampingCarAdminResponseDto> getById(UUID id, String base64Header) {
-        PersonRequestDto credentials = getCredentials(base64Header);
-        return ResponseEntity.ok(campingCarService.getById(id, credentials));
+    public ResponseEntity<CampingCarAdminResponseDto> getById(UUID id) {
+        
+        return ResponseEntity.ok(campingCarService.getById(id));
     }
 
     @Override
-    public ResponseEntity<Void> deleteById(UUID id, String base64Header) {
-        PersonRequestDto credentials = getCredentials(base64Header);
-        campingCarService.delete(id, credentials);
+    public ResponseEntity<Void> deleteById(UUID id) {
+        
+        campingCarService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<CampingCarAdminResponseDto> patch(UUID id, CampingCarPatchRequestDto dto, String base64Header) {
-        PersonRequestDto credentials = getCredentials(base64Header);
-        return ResponseEntity.ok(campingCarService.patch(id, dto, credentials));
-    }
-
-    private @NonNull PersonRequestDto getCredentials(String base64Header) {
-        byte[] decoded = Base64.getDecoder().decode(base64Header.split(" ")[1]);
-        String[] content = new String(decoded, StandardCharsets.UTF_8).split(":");
-        return new PersonRequestDto(content[0], content[1]);
+    public ResponseEntity<CampingCarAdminResponseDto> patch(UUID id, CampingCarPatchRequestDto dto) {
+        
+        return ResponseEntity.ok(campingCarService.patch(id, dto));
     }
 }

@@ -2,7 +2,13 @@ package com.accenture.locationvoitures.model;
 
 import com.accenture.locationvoitures.exception.VehicleException;
 import com.accenture.locationvoitures.model.enumeration.EDrivingLicence;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,36 +33,42 @@ public abstract class Vehicle {
     protected VehicleMetaData vehicleMetaData;
 
     public void validate() {
+        if (this.getBrand() == null)
+            throw new VehicleException("vehicle.brand.null", HttpStatus.BAD_REQUEST);
         if (this.getBrand().isBlank())
-            throw new VehicleException("Brand is blank", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("vehicle.brand.blank", HttpStatus.BAD_REQUEST);
+        if (this.getModel() == null)
+            throw new VehicleException("vehicle.model.null", HttpStatus.BAD_REQUEST);
         if (this.getModel().isBlank())
-            throw new VehicleException("Model is blank", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("vehicle.model.blank", HttpStatus.BAD_REQUEST);
+        if (this.getColor() == null)
+            throw new VehicleException("vehicle.color.null", HttpStatus.BAD_REQUEST);
         if (this.getColor().isBlank())
-            throw new VehicleException("Color is blank", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("vehicle.color.blank", HttpStatus.BAD_REQUEST);
         if (this.getVehicleMetaData() == null)
-            throw new VehicleException("VehicleMetaData is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("vehicle.metadata.null", HttpStatus.BAD_REQUEST);
         vehicleMetaData.validate();
     }
 
     public void checkUpdateData() {
         if (this.getBrand() != null && this.getBrand().isBlank())
-            throw new VehicleException("Brand is blank", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("vehicle.brand.blank", HttpStatus.BAD_REQUEST);
         if (this.getModel() != null && this.getModel().isBlank())
-            throw new VehicleException("Model is blank", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("vehicle.model.blank", HttpStatus.BAD_REQUEST);
         if (this.getColor() != null && this.getColor().isBlank())
-            throw new VehicleException("Color is blank", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("vehicle.color.blank", HttpStatus.BAD_REQUEST);
         if (this.getVehicleMetaData() != null)
             vehicleMetaData.checkUpdateData();
     }
 
     public void applyPatch(Vehicle patchData) {
-        if(patchData.getBrand()!=null)
+        if (patchData.getBrand() != null)
             this.setBrand(patchData.getBrand());
-        if(patchData.getModel()!=null)
+        if (patchData.getModel() != null)
             this.setModel(patchData.getModel());
-        if(patchData.getColor()!=null)
+        if (patchData.getColor() != null)
             this.setColor(patchData.getColor());
-        if(patchData.getVehicleMetaData()!=null)
+        if (patchData.getVehicleMetaData() != null)
             this.getVehicleMetaData().applyPatch(patchData.getVehicleMetaData());
     }
 }

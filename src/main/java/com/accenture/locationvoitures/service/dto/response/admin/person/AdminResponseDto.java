@@ -7,6 +7,7 @@ public record AdminResponseDto(
         String firstname,
         String lastname,
         String email,
-        String companyFunction
+        String companyFunction,
+        String role
 ) {
 }

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Min;
 
 public record CampingCarEquipmentPatchRequestDto(
 
-        @Min(1) Integer numberOfBerths,
+        @Min(value = 0,message = "equipment.numberofberths.invalid") Integer numberOfBerths,
         Boolean cookingEquipment,
         Boolean fridge,
         Boolean shower,

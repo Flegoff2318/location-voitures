@@ -17,14 +17,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
+
 @RestController
 @AllArgsConstructor
 public class UtilityController implements UtilityApi {
     private final UtilityService utilityService;
+
     @Override
-    public ResponseEntity<Void> create(UtilityRequestDto dto, String base64Header) {
-        PersonRequestDto credentials = getCredentials(base64Header);
-        UtilityAdminResponseDto responseDto = utilityService.add(dto,credentials);
+    public ResponseEntity<Void> create(UtilityRequestDto dto) {
+        UtilityAdminResponseDto responseDto = utilityService.add(dto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -34,39 +35,29 @@ public class UtilityController implements UtilityApi {
     }
 
     @Override
-    public ResponseEntity<List<UtilityAdminResponseDto>> getUtilities(Boolean active, Boolean outoffleet, String base64Header) {
-        PersonRequestDto credentials = getCredentials(base64Header);
-        if(active!=null && outoffleet!=null)
-            return ResponseEntity.ok(utilityService.findByVehicleMetaDataActiveAndVehicleMetaDataOutOfFleet(active,outoffleet,credentials));
-        if(active!=null)
-            return ResponseEntity.ok(utilityService.findByVehicleMetaDataActive(active,credentials));
-        if(outoffleet!=null)
-            return ResponseEntity.ok(utilityService.findByVehicleMetaDataOutOfFleet(outoffleet,credentials));
-        return ResponseEntity.ok(utilityService.findAll(credentials));
+    public ResponseEntity<List<UtilityAdminResponseDto>> getUtilities(Boolean active, Boolean outoffleet) {
+        if (active != null && outoffleet != null)
+            return ResponseEntity.ok(utilityService.findByVehicleMetaDataActiveAndVehicleMetaDataOutOfFleet(active, outoffleet));
+        if (active != null)
+            return ResponseEntity.ok(utilityService.findByVehicleMetaDataActive(active));
+        if (outoffleet != null)
+            return ResponseEntity.ok(utilityService.findByVehicleMetaDataOutOfFleet(outoffleet));
+        return ResponseEntity.ok(utilityService.findAll());
     }
 
     @Override
-    public ResponseEntity<UtilityAdminResponseDto> getById(UUID id, String base64Header) {
-        PersonRequestDto credentials = getCredentials(base64Header);
-        return ResponseEntity.ok(utilityService.getById(id,credentials));
+    public ResponseEntity<UtilityAdminResponseDto> getById(UUID id) {
+        return ResponseEntity.ok(utilityService.getById(id));
     }
 
     @Override
-    public ResponseEntity<Void> deleteById(UUID id, String base64Header) {
-        PersonRequestDto credentials = getCredentials(base64Header);
-        utilityService.delete(id,credentials);
+    public ResponseEntity<Void> deleteById(UUID id) {
+        utilityService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<UtilityAdminResponseDto> patch(UUID id, UtilityPatchRequestDto dto, String base64Header) {
-        PersonRequestDto credentials = getCredentials(base64Header);
-        return ResponseEntity.ok(utilityService.patch(id,dto,credentials));
-    }
-
-    private @NonNull PersonRequestDto getCredentials(String base64Header) {
-        byte[] decoded = Base64.getDecoder().decode(base64Header.split(" ")[1]);
-        String[] content = new String(decoded, StandardCharsets.UTF_8).split(":");
-        return new PersonRequestDto(content[0], content[1]);
+    public ResponseEntity<UtilityAdminResponseDto> patch(UUID id, UtilityPatchRequestDto dto) {
+        return ResponseEntity.ok(utilityService.patch(id, dto));
     }
 }

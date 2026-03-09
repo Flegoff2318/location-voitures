@@ -1,5 +1,6 @@
 package com.accenture.locationvoitures.service.dto.request.vehicle.patch;
 
+import com.accenture.locationvoitures.model.enumeration.ECampingCarType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
@@ -12,12 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public final class CampingCarPatchRequestDto extends FourWheeledPatchRequestDto {
-    @Min(0)
+    @Min(value = 0,message = "campingcar.ptac.invalid")
     private Double ptac;
-    @Min(0)
+    @Min(value = 1,message = "campingcar.height.invalid")
     private Double height;
     @Valid
     private CampingCarEquipmentPatchRequestDto campingCarEquipment;
-    private String campingCarType;
+    private ECampingCarType campingCarType;
 
 }

@@ -39,21 +39,21 @@ public class CampingCarEquipment {
 
     public void validate() {
         if(this.getNumberOfBerths()==null)
-            throw new VehicleException("Number of berths is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("equipment.numberofberths.null", HttpStatus.BAD_REQUEST);
         if(this.getNumberOfBerths()<0)
-            throw new VehicleException("Number of berths must be superior or equal to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("equipment.numberofberths.invalid", HttpStatus.BAD_REQUEST);
         if(this.getCookingEquipment()==null)
-            throw new VehicleException("Cooking equipment is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("equipment.cookingequipment.null", HttpStatus.BAD_REQUEST);
         if(this.getFridge()==null)
-            throw new VehicleException("Fridge is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("equipment.fridge.null", HttpStatus.BAD_REQUEST);
         if(this.getShower()==null)
-            throw new VehicleException("Shower is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("equipment.shower.null", HttpStatus.BAD_REQUEST);
         if(this.getBedLinen()==null)
-            throw new VehicleException("Bed linen is null", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("equipment.bedlinen.null", HttpStatus.BAD_REQUEST);
     }
 
     public void checkUpdateData() {
         if(this.getNumberOfBerths()!=null && getNumberOfBerths()<0)
-            throw new VehicleException("Number of berths must be superior or equal to 0", HttpStatus.BAD_REQUEST);
+            throw new VehicleException("equipment.numberofberths.invalid", HttpStatus.BAD_REQUEST);
     }
 }

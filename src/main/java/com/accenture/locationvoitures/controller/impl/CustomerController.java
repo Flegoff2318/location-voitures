@@ -2,14 +2,15 @@ package com.accenture.locationvoitures.controller.impl;
 
 import com.accenture.locationvoitures.controller.CustomerApi;
 import com.accenture.locationvoitures.service.CustomerService;
-import com.accenture.locationvoitures.service.dto.request.person.patch.CustomerPatchRequestDto;
 import com.accenture.locationvoitures.service.dto.request.person.CustomerRequestDto;
 import com.accenture.locationvoitures.service.dto.request.person.PersonRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.patch.CustomerPatchRequestDto;
 import com.accenture.locationvoitures.service.dto.response.customer.person.CustomerResponseDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -27,30 +28,29 @@ public class CustomerController implements CustomerApi {
         CustomerResponseDto responseDto = customerService.add(dto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(responseDto.uuid())
+                .path("/{email}")
+                .buildAndExpand(responseDto.email())
                 .toUri();
         return ResponseEntity.created(location).build();
     }
 
-
     @Override
-    public ResponseEntity<CustomerResponseDto> readAccountDetails(String base64Header) {
+    public ResponseEntity<CustomerResponseDto> readAccountDetails(@RequestHeader(name = "authorization") String base64Header) {
         PersonRequestDto credentials = getCredentials(base64Header);
-        return ResponseEntity.ok(customerService.getCustomerDetailsByCredentials(credentials));
+        return ResponseEntity.ok(customerService.getCustomerDetailsByEmail(credentials.email()));
     }
 
     @Override
-    public ResponseEntity<CustomerResponseDto> delete(String base64Header) {
+    public ResponseEntity<CustomerResponseDto> delete(@RequestHeader(name = "authorization") String base64Header) {
         PersonRequestDto credentials = getCredentials(base64Header);
-        customerService.deleteCustomer(credentials);
+        customerService.deleteCustomer(credentials.email());
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<CustomerResponseDto> patch(String base64Header, CustomerPatchRequestDto dto) {
+    public ResponseEntity<CustomerResponseDto> patch(@RequestHeader(name = "authorization") String base64Header, CustomerPatchRequestDto dto) {
         PersonRequestDto credentials = getCredentials(base64Header);
-        return ResponseEntity.ok(customerService.patch(dto,credentials));
+        return ResponseEntity.ok(customerService.patch(credentials.email(), dto));
     }
 
     private @NonNull PersonRequestDto getCredentials(String base64Header) {
