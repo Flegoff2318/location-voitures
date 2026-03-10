@@ -23,5 +23,5 @@ public class Customer extends Person {
     private LocalDate birthday;
     private LocalDate registrationDate;
     private List<EDrivingLicence> drivingLicences;
-    private boolean active;
+    private Boolean active;
 }
