@@ -1,10 +1,11 @@
 package com.accenture.locationvoitures.service.impl;
 
 import com.accenture.locationvoitures.exception.AdminException;
+import com.accenture.locationvoitures.exception.CustomerException;
 import com.accenture.locationvoitures.model.Admin;
 import com.accenture.locationvoitures.repository.AdminRepository;
 import com.accenture.locationvoitures.service.AdminService;
-import com.accenture.locationvoitures.service.dto.request.person.AdminPatchRequestDto;
+import com.accenture.locationvoitures.service.dto.request.person.patch.AdminPatchRequestDto;
 import com.accenture.locationvoitures.service.dto.request.person.AdminRequestDto;
 import com.accenture.locationvoitures.service.dto.response.admin.person.AdminResponseDto;
 import com.accenture.locationvoitures.service.mapper.AdminMapper;
@@ -30,6 +31,8 @@ public class AdminServiceImpl implements AdminService {
     public AdminResponseDto addAdmin(AdminRequestDto dto) {
         verifyAdmin(dto);
         Admin admin = adminMapper.toEntity(dto);
+        if(adminRepository.findByEmail(admin.getEmail()).isPresent())
+            throw new AdminException("email.used",HttpStatus.BAD_REQUEST);
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         admin.setRole("ROLE_ADMIN");
         Admin saved = adminRepository.save(admin);
@@ -42,7 +45,7 @@ public class AdminServiceImpl implements AdminService {
     public AdminResponseDto getAdminDetailsByEmail(String email) {
         Optional<Admin> optAdmin = adminRepository.findByEmail(email);
         if (optAdmin.isEmpty())
-            throw new EntityNotFoundException("User not found");
+            throw new EntityNotFoundException("admin.notfound");
         Admin admin = optAdmin.get();
         return adminMapper.toResponseDto(admin);
     }
@@ -51,19 +54,19 @@ public class AdminServiceImpl implements AdminService {
     public void deleteAdmin(String email) {
         long adminCount = adminRepository.count();
         if(adminCount==1){
-            throw new AdminException("You can't delete the last admin",HttpStatus.BAD_REQUEST);
+            throw new AdminException("admin.delete.last",HttpStatus.BAD_REQUEST);
         }
-        Admin admin = adminRepository.findByEmail(email).orElseThrow(()->new EntityNotFoundException("User not found"));
+        Admin admin = adminRepository.findByEmail(email).orElseThrow(()->new EntityNotFoundException("admin.notfound"));
         adminRepository.delete(admin);
     }
 
     @Override
     public AdminResponseDto patch(String email,AdminPatchRequestDto dto) {
         if (dto == null)
-            throw new AdminException("DTO is null", HttpStatus.BAD_REQUEST);
+            throw new AdminException("dto.null", HttpStatus.BAD_REQUEST);
         Optional<Admin> optAdmin = adminRepository.findByEmail(email);
         if (optAdmin.isEmpty())
-            throw new EntityNotFoundException("User not found");
+            throw new EntityNotFoundException("admin.notfound");
         Admin admin = optAdmin.get();
 
         Admin patched = patchAdminData(dto, admin);
@@ -73,22 +76,22 @@ public class AdminServiceImpl implements AdminService {
     private @NonNull Admin patchAdminData(AdminPatchRequestDto dto, Admin admin) {
         if (dto.firstname() != null) {
             if (dto.firstname().isBlank())
-                throw new AdminException("Firstname can't be blank", HttpStatus.BAD_REQUEST);
+                throw new AdminException("person.firstname.blank", HttpStatus.BAD_REQUEST);
             admin.setFirstname(dto.firstname());
         }
         if (dto.lastname() != null) {
             if (dto.lastname().isBlank())
-                throw new AdminException("Lastname can't be blank", HttpStatus.BAD_REQUEST);
+                throw new AdminException("person.lastname.blank", HttpStatus.BAD_REQUEST);
             admin.setLastname(dto.lastname());
         }
         if (dto.password() != null) {
             if (dto.password().isBlank())
-                throw new AdminException("Password can't be blank", HttpStatus.BAD_REQUEST);
-            admin.setPassword(dto.password());
+                throw new AdminException("person.password.blank", HttpStatus.BAD_REQUEST);
+            admin.setPassword(passwordEncoder.encode(dto.password()));
         }
         if(dto.companyFunction()!=null){
             if(dto.companyFunction().isBlank())
-                throw new AdminException("Company Function can't be blank", HttpStatus.BAD_REQUEST);
+                throw new AdminException("admin.companyfunction.blank", HttpStatus.BAD_REQUEST);
             admin.setCompanyFunction(dto.companyFunction());
         }
 
@@ -97,17 +100,27 @@ public class AdminServiceImpl implements AdminService {
 
     private void verifyAdmin(AdminRequestDto dto) {
         if (dto == null)
-            throw new AdminException("DTO is null", HttpStatus.BAD_REQUEST);
-        if (dto.firstname() == null || dto.firstname().isBlank())
-            throw new AdminException("Firstname is null or blank", HttpStatus.BAD_REQUEST);
-        if (dto.lastname() == null || dto.lastname().isBlank())
-            throw new AdminException("Lastname is null or blank", HttpStatus.BAD_REQUEST);
-        if (dto.email() == null || dto.email().isBlank())
-            throw new AdminException("Email is null or blank", HttpStatus.BAD_REQUEST);
-        if (dto.password() == null || dto.password().isBlank())
-            throw new AdminException("Password is null or blank", HttpStatus.BAD_REQUEST);
-        if (dto.companyFunction() == null || dto.companyFunction().isBlank())
-            throw new AdminException("CompanyFunction is null or blank", HttpStatus.BAD_REQUEST);
+            throw new AdminException("dto.null", HttpStatus.BAD_REQUEST);
+        if (dto.firstname() == null)
+            throw new CustomerException("person.firstname.null", HttpStatus.BAD_REQUEST);
+        if(dto.firstname().isBlank())
+            throw new CustomerException("person.firstname.blank", HttpStatus.BAD_REQUEST);
+        if (dto.lastname() == null)
+            throw new CustomerException("person.lastname.null", HttpStatus.BAD_REQUEST);
+        if(dto.lastname().isBlank())
+            throw new CustomerException("person.lastname.blank", HttpStatus.BAD_REQUEST);
+        if (dto.email() == null)
+            throw new CustomerException("person.email.null", HttpStatus.BAD_REQUEST);
+        if(dto.email().isBlank())
+            throw new CustomerException("person.email.blank", HttpStatus.BAD_REQUEST);
+        if (dto.password() == null)
+            throw new CustomerException("person.password.null", HttpStatus.BAD_REQUEST);
+        if(dto.password().isBlank())
+            throw new CustomerException("person.password.blank", HttpStatus.BAD_REQUEST);
+        if (dto.companyFunction() == null)
+            throw new AdminException("admin.companyfunction.null", HttpStatus.BAD_REQUEST);
+        if(dto.companyFunction().isBlank())
+            throw new AdminException("admin.companyfunction.blank", HttpStatus.BAD_REQUEST);
     }
 
 }
