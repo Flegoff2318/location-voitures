@@ -15,6 +15,7 @@ import com.accenture.locationvoitures.service.mapper.CustomerMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
     private final PasswordEncoder passwordEncoder;
+    private final MessageSourceAccessor messages;
 
     @Override
     public CustomerResponseDto add(CustomerRequestDto dto) {
@@ -38,7 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         Customer customer = customerMapper.toEntity(dto);
         if(customerRepository.findByEmail(customer.getEmail()).isPresent())
-            throw new CustomerException("email.used",HttpStatus.BAD_REQUEST);
+            throw new CustomerException(messages.getMessage("person.email.used"),HttpStatus.BAD_REQUEST);
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         customer.setRole(CUSTOMER);
         customer.setRegistrationDate(LocalDate.now());
@@ -52,7 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerResponseDto getCustomerDetailsByEmail(String email) {
         Optional<Customer> optCustomer = customerRepository.findByEmail(email);
         if (optCustomer.isEmpty())
-            throw new EntityNotFoundException("customer.notfound");
+            throw new EntityNotFoundException(messages.getMessage("customer.notfound"));
         Customer customer = optCustomer.get();
         return customerMapper.toResponseDto(customer);
     }
@@ -62,7 +64,7 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteCustomer(String email) {
         Optional<Customer> optCustomer = customerRepository.findByEmail(email);
         if (optCustomer.isEmpty())
-            throw new EntityNotFoundException("customer.notfound");
+            throw new EntityNotFoundException(messages.getMessage("customer.notfound"));
         Customer customer = optCustomer.get();
         customerRepository.delete(customer);
     }
@@ -71,7 +73,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerResponseDto patch(String email, CustomerPatchRequestDto dto) {
         Optional<Customer> optCustomer = customerRepository.findByEmail(email);
         if (optCustomer.isEmpty())
-            throw new CustomerException("customer.notfound", HttpStatus.NOT_FOUND);
+            throw new CustomerException(messages.getMessage("customer.notfound"), HttpStatus.NOT_FOUND);
         Customer customer = optCustomer.get();
 
         Customer patched = patchCustomerData(dto, customer);
@@ -82,25 +84,25 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customerPatchData = customerMapper.toEntity(dto);
         if (dto.birthday() != null) {
             if (dto.birthday().isBlank())
-                throw new CustomerException("customer.birthday.blank", HttpStatus.BAD_REQUEST);
+                throw new CustomerException(messages.getMessage("customer.birthday.blank"), HttpStatus.BAD_REQUEST);
             customer.setBirthday(customerPatchData.getBirthday());
 
         }
         if (dto.password() != null) {
             if (dto.password().isBlank())
-                throw new CustomerException("person.password.blank", HttpStatus.BAD_REQUEST);
+                throw new CustomerException(messages.getMessage("person.password.blank"), HttpStatus.BAD_REQUEST);
             customer.setPassword(passwordEncoder.encode(customerPatchData.getPassword()));
 
         }
         if (dto.lastname() != null) {
             if (dto.lastname().isBlank())
-                throw new CustomerException("person.lastname.blank", HttpStatus.BAD_REQUEST);
+                throw new CustomerException(messages.getMessage("person.lastname.blank"), HttpStatus.BAD_REQUEST);
             customer.setLastname(customerPatchData.getLastname());
 
         }
         if (dto.firstname() != null) {
             if (dto.firstname().isBlank())
-                throw new CustomerException("person.firstname.blank", HttpStatus.BAD_REQUEST);
+                throw new CustomerException(messages.getMessage("person.firstname.blank"), HttpStatus.BAD_REQUEST);
             customer.setFirstname(customerPatchData.getFirstname());
         }
 
@@ -120,7 +122,7 @@ public class CustomerServiceImpl implements CustomerService {
                     try {
                         EDrivingLicence.valueOf(s);
                     } catch (IllegalArgumentException _) {
-                        throw new CustomerException("customer.licence.invalid", HttpStatus.BAD_REQUEST);
+                        throw new CustomerException(messages.getMessage("customer.licence.invalid"), HttpStatus.BAD_REQUEST);
                     }
                 });
             }
@@ -132,18 +134,18 @@ public class CustomerServiceImpl implements CustomerService {
         Address customerAddress = customer.getAddress();
         if (dto.address().street() != null) {
             if (dto.address().street().isBlank())
-                throw new AddressException("address.street.blank", HttpStatus.BAD_REQUEST);
+                throw new AddressException(messages.getMessage("address.street.blank"), HttpStatus.BAD_REQUEST);
             customerAddress.setStreet(customerPatchData.getAddress().getStreet());
         }
 
         if (dto.address().postalCode() != null) {
             if (dto.address().postalCode().isBlank())
-                throw new AddressException("address.postalcode.blank", HttpStatus.BAD_REQUEST);
+                throw new AddressException(messages.getMessage("address.postalcode.blank"), HttpStatus.BAD_REQUEST);
             customerAddress.setPostalCode(customerPatchData.getAddress().getPostalCode());
         }
         if (dto.address().city() != null) {
             if (dto.address().city().isBlank())
-                throw new AddressException("address.city.blank", HttpStatus.BAD_REQUEST);
+                throw new AddressException(messages.getMessage("address.city.blank"), HttpStatus.BAD_REQUEST);
             customerAddress.setCity(customerPatchData.getAddress().getCity());
         }
         return customerAddress;
@@ -151,44 +153,44 @@ public class CustomerServiceImpl implements CustomerService {
 
     private void verifyCustomer(CustomerRequestDto dto) {
         if (dto == null)
-            throw new CustomerException("dto.null", HttpStatus.BAD_REQUEST);
+            throw new CustomerException(messages.getMessage("dto.null"), HttpStatus.BAD_REQUEST);
         verifyAddress(dto.address());
         if (dto.firstname() == null)
-            throw new CustomerException("person.firstname.null", HttpStatus.BAD_REQUEST);
+            throw new CustomerException(messages.getMessage("person.firstname.null"), HttpStatus.BAD_REQUEST);
         if(dto.firstname().isBlank())
-            throw new CustomerException("person.firstname.blank", HttpStatus.BAD_REQUEST);
+            throw new CustomerException(messages.getMessage("person.firstname.blank"), HttpStatus.BAD_REQUEST);
         if (dto.lastname() == null)
-            throw new CustomerException("person.lastname.null", HttpStatus.BAD_REQUEST);
+            throw new CustomerException(messages.getMessage("person.lastname.null"), HttpStatus.BAD_REQUEST);
         if(dto.lastname().isBlank())
-            throw new CustomerException("person.lastname.blank", HttpStatus.BAD_REQUEST);
+            throw new CustomerException(messages.getMessage("person.lastname.blank"), HttpStatus.BAD_REQUEST);
         if (dto.email() == null)
-            throw new CustomerException("person.email.null", HttpStatus.BAD_REQUEST);
+            throw new CustomerException(messages.getMessage("person.email.null"), HttpStatus.BAD_REQUEST);
         if(dto.email().isBlank())
-            throw new CustomerException("person.email.blank", HttpStatus.BAD_REQUEST);
+            throw new CustomerException(messages.getMessage("person.email.blank"), HttpStatus.BAD_REQUEST);
         if (dto.password() == null)
-            throw new CustomerException("person.password.null", HttpStatus.BAD_REQUEST);
+            throw new CustomerException(messages.getMessage("person.password.null"), HttpStatus.BAD_REQUEST);
         if(dto.password().isBlank())
-            throw new CustomerException("person.password.blank", HttpStatus.BAD_REQUEST);
+            throw new CustomerException(messages.getMessage("person.password.blank"), HttpStatus.BAD_REQUEST);
         if (dto.birthday() == null)
-            throw new CustomerException("customer.birthday.null", HttpStatus.BAD_REQUEST);
+            throw new CustomerException(messages.getMessage("customer.birthday.null"), HttpStatus.BAD_REQUEST);
         if(dto.birthday().isBlank())
-            throw new CustomerException("customer.birthday.blank", HttpStatus.BAD_REQUEST);
+            throw new CustomerException(messages.getMessage("customer.birthday.blank"), HttpStatus.BAD_REQUEST);
     }
 
     private void verifyAddress(AddressRequestDto dto) {
         if (dto == null)
-            throw new AddressException("dto.null", HttpStatus.BAD_REQUEST);
+            throw new AddressException(messages.getMessage("dto.null"), HttpStatus.BAD_REQUEST);
         if (dto.street() == null)
-            throw new AddressException("address.street.null", HttpStatus.BAD_REQUEST);
+            throw new AddressException(messages.getMessage("address.street.null"), HttpStatus.BAD_REQUEST);
         if(dto.street().isBlank())
-            throw new AddressException("address.street.blank", HttpStatus.BAD_REQUEST);
+            throw new AddressException(messages.getMessage("address.street.blank"), HttpStatus.BAD_REQUEST);
         if (dto.postalCode() == null)
-            throw new AddressException("address.postalcode.null", HttpStatus.BAD_REQUEST);
+            throw new AddressException(messages.getMessage("address.postalcode.null"), HttpStatus.BAD_REQUEST);
         if(dto.postalCode().isBlank())
-            throw new AddressException("address.postalcode.blank", HttpStatus.BAD_REQUEST);
+            throw new AddressException(messages.getMessage("address.postalcode.blank"), HttpStatus.BAD_REQUEST);
         if (dto.city() == null)
-            throw new AddressException("address.city.null", HttpStatus.BAD_REQUEST);
+            throw new AddressException(messages.getMessage("address.city.null"), HttpStatus.BAD_REQUEST);
         if(dto.city().isBlank())
-            throw new AddressException("address.city.blank", HttpStatus.BAD_REQUEST);
+            throw new AddressException(messages.getMessage("address.city.blank"), HttpStatus.BAD_REQUEST);
     }
 }

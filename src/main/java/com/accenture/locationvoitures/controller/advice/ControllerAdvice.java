@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 
 @RestControllerAdvice
 @AllArgsConstructor
@@ -27,14 +28,12 @@ public class ControllerAdvice {
      * Returns an error with the business message.
      */
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ErrorDto> businessException(BusinessException e) {
-        return ResponseEntity.status(e.getCode()).body(
-                new ErrorDto(
-                        LocalDateTime.now(),
-                        e.getCode().value(),
-                        e.getMessage()
-                )
-        );
+    public ResponseEntity<ErrorDto> businessException(Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( new ErrorDto(
+                java.time.LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                e.getMessage()
+        ));
     }
 
     /**
@@ -84,6 +83,20 @@ public class ControllerAdvice {
         );
 
         return ResponseEntity.badRequest().body(errorsDto);
+    }
+
+    /**
+     * Called when a DateTimeParseException happens
+     * Returns a generic 400 BAD_REQUEST with a date format hint
+     * Temporary Exception Handler for the CustomerRequestDto & CustomerPatchRequestDto
+     */
+    @ExceptionHandler(DateTimeParseException.class)
+    public ResponseEntity<ErrorDto> dateTimeParseEx(Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDto(
+                java.time.LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Invalid Date Format (YYYY-MM-DD)"
+        ));
     }
 
     /**
