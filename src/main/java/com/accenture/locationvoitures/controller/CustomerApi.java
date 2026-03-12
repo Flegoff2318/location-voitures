@@ -33,7 +33,6 @@ public interface CustomerApi {
     @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @ApiResponse(responseCode = "401", description = "Not Authorized", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @ApiResponse(responseCode = "403", description = "Access forbidden", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
-    @ApiResponse(responseCode = "404", description = "Customer not found", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @GetMapping("/account")
     ResponseEntity<CustomerResponseDto> readAccountDetails(@RequestHeader(name = "authorization") String base64Header);
 

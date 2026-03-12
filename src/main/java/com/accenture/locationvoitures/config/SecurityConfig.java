@@ -31,7 +31,7 @@ public class SecurityConfig {
     private static final String CUSTOMER = "CUSTOMER";
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http){
+    SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
@@ -43,9 +43,10 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers(HttpMethod.POST, "/customers").permitAll()
                         .requestMatchers("/customers/**").hasAnyRole(ADMIN, CUSTOMER)
+                        .requestMatchers(HttpMethod.GET, "/vehicles/**").hasAnyRole(ADMIN, CUSTOMER)
                         .requestMatchers("/vehicles/**").hasRole(ADMIN)
                         .requestMatchers("/vehicles").hasAnyRole(ADMIN, CUSTOMER)
-                        .requestMatchers(HttpMethod.POST,"/admins").hasAnyRole(ADMIN,CUSTOMER)
+                        .requestMatchers(HttpMethod.POST, "/admins").hasAnyRole(ADMIN, CUSTOMER)
                         .requestMatchers("/admins/**").hasRole(ADMIN)
                         .anyRequest().permitAll()
                 );

@@ -8,16 +8,39 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 
 public class FakeBikeRepository implements BikeRepository {
     public final Map<UUID, Bike> store = new HashMap<>();
 
+    @Override
+    public <S extends Bike> S save(S entity) {
+        store.put(entity.getUuid(), entity);
+        return entity;
+    }
+
+    @Override
+    public Optional<Bike> findById(UUID uuid) {
+        Optional<Bike> optBike = Optional.empty();
+        try {
+            Bike bike = store.get(uuid);
+            optBike = Optional.of(bike);
+        } catch (Exception _) {
+            /* For test purposes */
+        }
+        return optBike;
+    }
+
+    @Override
+    public void deleteById(UUID uuid) {
+        store.remove(uuid);
+    }
+
+    @Override
+    public List<Bike> findAll() {
+        return store.values().stream().toList();
+    }
 
     @Override
     public List<Bike> findByVehicleMetaDataActive(boolean active) {
@@ -114,38 +137,18 @@ public class FakeBikeRepository implements BikeRepository {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public <S extends Bike> S save(S entity) {
-        store.put(entity.getUuid(), entity);
-        return entity;
-    }
 
     @Override
     public <S extends Bike> List<S> saveAll(Iterable<S> entities) {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public Optional<Bike> findById(UUID uuid) {
-        Optional<Bike> optBike = Optional.empty();
-        try{
-            Bike bike = store.get(uuid);
-            optBike = Optional.of(bike);
-        } catch (Exception _) {
-            /* For test purposes */
-        }
-        return optBike;
-    }
 
     @Override
     public boolean existsById(UUID uuid) {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public List<Bike> findAll() {
-        return store.values().stream().toList();
-    }
 
     @Override
     public List<Bike> findAllById(Iterable<UUID> uuids) {
@@ -157,10 +160,6 @@ public class FakeBikeRepository implements BikeRepository {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public void deleteById(UUID uuid) {
-        store.remove(uuid);
-    }
 
     @Override
     public void delete(Bike entity) {

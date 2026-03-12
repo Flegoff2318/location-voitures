@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface CustomerRepository extends JpaRepository<Customer, UUID> {
     @Query("""
-            SELECT DISTINCT c FROM Customer c
+            SELECT c FROM Customer c
             LEFT JOIN FETCH c.address
             WHERE c.email = :email
             """)

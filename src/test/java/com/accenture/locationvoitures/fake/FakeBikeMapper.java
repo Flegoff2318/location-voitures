@@ -77,6 +77,6 @@ public class FakeBikeMapper implements BikeMapper {
 
     @Override
     public BikeCustomerResponseDto toCustomerResponseDto(Bike bike) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }
